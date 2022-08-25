@@ -10,13 +10,13 @@ class System {
 
     private $members = [];
 
-    private $path;
+    private $folder;
 
     public function __construct($path, $filename)
     {
         $data = json_decode(file_get_contents($path . '/' .$filename));
         
-        $this->path = $path;
+        $this->folder = basename($path);
 
         // first we register all relevant members from the json file
         $this->registerMember('name', $data->name, self::VAR_TYPE_PRIMITIVE);
@@ -56,7 +56,11 @@ class System {
         return $this->getMember('pageOrder')->getPage($idx);
     }
 
-    public function getPath() {
-        return $this->path;
+    public function getFolder() {
+        return $this->folder;
+    }
+
+    public function getTemplatePath() {
+        return 'resources/'  . $this->folder . '/snippets/template.htm';
     }
 }

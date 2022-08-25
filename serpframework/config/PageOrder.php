@@ -34,7 +34,14 @@ class PageOrder implements Transformable
                 }
                 return $page->getPage($idx);
             }
+            if(is_object($page)) {
+                $res = $page->getPage($idx);
+                if($idx == 0) {
+                    return $res;
+                }
+            }
             $idx--;
         }
+        return null;
     }
 }

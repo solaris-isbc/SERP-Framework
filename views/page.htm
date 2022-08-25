@@ -1,0 +1,15 @@
+<check if="{{ @scope=='serp' }}">
+    <true>
+        <include href="views/serp_header.htm" />
+        <repeat group="{{ @snippets }}" value="{{ @snippet }}">
+            <include href="{{ @templatePath }}" />
+        </repeat>
+        <include href="views/serp_footer.htm" />
+    </true>
+</check>
+<check if="{{ @scope=='questionnaire' }}">
+<true>
+
+    HERE BE QUESTIONS
+</true>
+    </check>

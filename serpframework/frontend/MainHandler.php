@@ -3,6 +3,7 @@
 namespace serpframework\frontend;
 
 use serpframework\config\Configuration;
+use serpframework\config\Snippets;
 
 class MainHandler
 {
@@ -32,17 +33,34 @@ class MainHandler
 
     public function displayPage($page) {
         $this->handleEntry();
-        echo $this->findPage($this->system->getPage($page));
+        $pageData = $this->findPageData($this->system->getPage($page));
+        $templatePath = $this->system->getTemplatePath();
+
+        if(isset($pageData->snippets)){
+            $snippets = new Snippets($pageData);
+            $this->f3->set('templatePath', $templatePath);
+            $this->f3->set('snippets', $snippets->getSnippets());
+            $this->f3->set('scope', 'serp');
+    
+            echo \Template::instance()->render('views/page.htm');    
+        }else{
+            // TODO: Questionnaire
+            $questionnaire = new Questionnaire($pageData);
+            $this->f3->set('scope', 'questionnaire');
+            echo \Template::instance()->render('views/page.htm');    
+
+        }
     }
 
-    private function findPage($filename) {
+    private function findPageData($filename) {
         // scan the system folders for the file, prioritizing first questionnaires, then snippets
-        $mainPath = $this->system->getPath();
+        $mainPath = dirname(__FILE__) . '/../../resources/' . $this->system->getFolder();
+
         if(file_exists($mainPath . '/questionnaires/' . $filename)) {
-            return file_get_contents($mainPath . '/questionnaires/' . $filename);
+            return json_decode(file_get_contents($mainPath . '/questionnaires/' . $filename));
         }
         if(file_exists($mainPath . '/snippets/' . $filename)) {
-            return file_get_contents($mainPath . '/snippets/' . $filename);
+            return json_decode(file_get_contents($mainPath . '/snippets/' . $filename));
         }
 
         return null;

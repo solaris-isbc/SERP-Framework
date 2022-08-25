@@ -1,61 +1,72 @@
 {
     "order": "fixed",
+    "query": "is bigfoot real?",
     "snippets": [
         {
+            "id": "b1",
             "title": "Why Do So Many People Still Want to Believe in Bigfoot?",
             "url": "https://www.smithsonianmag.com/history/why-so-many-people-still-believe-in-bigfoot-180970045/",
             "shownUrl": "https://www.smithsonianmag.com ›\n                                        history › why-so-m...",
             "text": "The most recent\n                        sighting, in June 2018, was by a woman in Florida who reported a creature that looked like “a\n                        large pile of soggy grass.” Other evidence in the ..."
         },
         {
+            "id": "b2",
             "title": "Bigfoot: Is the Sasquatch real? | Live Science",
             "url": "https://www.livescience.com/24598-bigfoot.html",
             "shownUrl": "https://www.livescience.com ›\n                                        References",
             "text": "by B Radford — Bigfoot, or\n                            Sasquatch, is a large ape-like creature some people believe inhabits North America\n                            but there's no hard evidence it actually ..."
         },
         {
+            "id": "b3",
             "title": "Forensic Expert Says Bigfoot Is Real - National Geographic\n                            ",
             "url": "https://www.nationalgeographic.com/culture/article/forensic-expert-says-bigfoot-is-real",
             "shownUrl": "https://www.nationalgeographic.com › culture › article",
             "text": "23 Oct 2003 — \"Given the scientific\n                        evidence that I have examined, I'm convinced there's a creature out there that is yet to be\n                        identified,\" said Jeff Meldrum ..."
         },
         {
+            "id": "b4",
             "title": "Bigfoot - Wikipedia",
             "url": "https://en.wikipedia.org/wiki/Bigfoot",
             "shownUrl": "https://en.wikipedia.org › wiki\n                                        › Bigfoot",
             "text": "\n                        Bigfoot, also commonly referred to as Sasquatch, is a purported ape-like\n                            creature said to inhabit the forests of North America. Many dubious articles\n                            have ..."
         },
         {
+            "id": "b5",
             "title": "Hickory man says he has video of Big Foot - YouTube",
             "url": "https://www.youtube.com/watch?v=aO6xQBYPNG8",
             "shownUrl": "https://www.youtube.com ›\n                                        watch",
             "text": "30 Aug 2019 — He shot video in McDowell\n                        County where several people reported seeing the creature over the years."
         },
         {
+            "id": "b6",
             "title": "Bigfoot Was Investigated by the FBI. Here's What They Found\n                            ",
             "url": "https://www.history.com/news/bigfoot-fbi-file-investigation-discovery",
             "shownUrl": "https://www.history.com › news ›\n                                        bigfoot-fbi-file-inves...",
             "text": "22 Jan 2020 — In 2019, the FBI\n                            released its four-decade-old file on a Bigfoot inquiry."
         },
         {
+            "id": "b7",
             "title": "The true origin of Sasquatch - BBC Travel",
             "url": "https://www.bbc.com/travel/article/20220720-the-true-origin-of-sasquatch",
             "shownUrl": "https://www.bbc.com › travel ›\n                                        article › 20220720-the-...",
             "text": "21 Jul 2022 — Stories of a hairy,\n                        forest-dwelling, bi-pedal primate have persisted for centuries in British Columbia. But perhaps\n                        more important than ..."
         },
         {
+            "id": "b8",
             "title": "Is Bigfoot real? A woman is suing California to get it to\n                                ...",
             "url": "https://www.sandiegouniontribune.com/opinion/the-conversation/sd-group-sues-california-to-recognize-sasquatch-bigfoot-existence-20180213-htmlstory.html",
             "shownUrl": "https://www.sandiegouniontribune.com › opinion › sd-...",
             "text": "13 Feb 2018 — In an interview with\n                            the Press-Enterprise, Ackley described an encounter with the creature in March last year. “I\n                            ran into a Sasquatch – a ..."
         },
         {
+            "id": "b9",
             "title": "Even if Bigfoot isn't real, we still need him - High Country\n                                News",
             "url": "https://www.hcn.org/articles/essays-even-if-bigfoot-isnt-real-we-still-need-him",
             "shownUrl": "https://www.hcn.org › articles ›\n                                        essays-even-if-bigfoot-i...",
             "text": "1 Apr 2019 — They are good folk, the\n                            Sasquatch people — they are so much more than a Wild Thing in the woods.” Laura\n                            Krantz/Foxtopus Ink. I'm relieved it's ..."
         },
         {
+            "id": "b10",
             "title": "Could Bigfoot Really Be Out There? - Popular Mechanics\n                                ",
             "url": "https://www.popularmechanics.com/adventure/outdoors/a23622082/bigfoot-history/",
             "shownUrl": "https://www.popularmechanics.com › ... › Outdoors",
