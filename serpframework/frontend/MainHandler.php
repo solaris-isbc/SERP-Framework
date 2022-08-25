@@ -9,13 +9,15 @@ class MainHandler
     private $config;
     private $f3;
 
+    private $system;
+
     public function __construct($f3)
     {
         $this->config = new Configuration(dirname(__FILE__) . '/../../resources/config.json');   
         $this->f3 = $f3;
     }
 
-    public function handleEntry() {
+    private function handleEntry() {
         // cookie user for IDing
         $userId = $this->identifyUser();
 
@@ -25,16 +27,34 @@ class MainHandler
             // assign user to system
             $system = $this->chooseSystem($userId);
         }
-        // display entry page
-        $this->displayEntryPage($system);
+        $this->system = $system;
     }
 
-    private function displayEntryPage($system) {
-        $this->f3->set('projectTitle', $system->getMember('task')->getTitle());
-        $this->f3->set('author', $system->getMember('task')->getAuthor());
-        $this->f3->set('taskDescription', $system->getMember('task')->getTaskDescription());
-        $this->f3->set('agreementText', $system->getMember('task')->getAgreementText());
-        $this->f3->set('systemName', $system->getIdentifier());
+    public function displayPage($page) {
+        $this->handleEntry();
+        echo $this->findPage($this->system->getPage($page));
+    }
+
+    private function findPage($filename) {
+        // scan the system folders for the file, prioritizing first questionnaires, then snippets
+        $mainPath = $this->system->getPath();
+        if(file_exists($mainPath . '/questionnaires/' . $filename)) {
+            return file_get_contents($mainPath . '/questionnaires/' . $filename);
+        }
+        if(file_exists($mainPath . '/snippets/' . $filename)) {
+            return file_get_contents($mainPath . '/snippets/' . $filename);
+        }
+
+        return null;
+    }
+
+    public function displayEntryPage() {
+        $this->handleEntry();
+        $this->f3->set('projectTitle', $this->system->getMember('task')->getTitle());
+        $this->f3->set('author', $this->system->getMember('task')->getAuthor());
+        $this->f3->set('taskDescription', $this->system->getMember('task')->getTaskDescription());
+        $this->f3->set('agreementText', $this->system->getMember('task')->getAgreementText());
+        $this->f3->set('systemName', $this->system->getIdentifier());
 
         echo \Template::instance()->render('views/entry_page.htm');
     }

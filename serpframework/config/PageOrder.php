@@ -25,4 +25,16 @@ class PageOrder implements Transformable
 
         return $this;
     }
+
+    public function getPage(&$idx) {
+        foreach($this->pages as $page) {
+            if($idx == 0) {
+                if(!is_object($page)) {
+                    return $page;
+                }
+                return $page->getPage($idx);
+            }
+            $idx--;
+        }
+    }
 }

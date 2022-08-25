@@ -39,7 +39,7 @@ class Configuration {
         $dir = new \DirectoryIterator($this->resourcesDirectory);
         foreach ($dir as $fileinfo) {
             if (!$fileinfo->isDot() && $fileinfo->isDir() && file_exists($fileinfo->getPathName() . '/system.json')) {
-                $this->registerSystem($fileinfo->getPathName() . '/system.json');
+                $this->registerSystem($fileinfo->getPathName(), 'system.json');
             }
         }
     }
@@ -54,8 +54,8 @@ class Configuration {
         return null;
     }
 
-    private function registerSystem($filePath) {
-        $system = new System($filePath);
+    private function registerSystem($path, $filename) {
+        $system = new System($path, $filename);
         $this->systems[] = $system;
     }
 

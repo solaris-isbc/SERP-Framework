@@ -10,10 +10,14 @@ class System {
 
     private $members = [];
 
-    public function __construct($filename)
+    private $path;
+
+    public function __construct($path, $filename)
     {
-        $data = json_decode(file_get_contents($filename));
+        $data = json_decode(file_get_contents($path . '/' .$filename));
         
+        $this->path = $path;
+
         // first we register all relevant members from the json file
         $this->registerMember('name', $data->name, self::VAR_TYPE_PRIMITIVE);
         $this->registerMember('task', $data->task, self::VAR_TYPE_OBJECT);
@@ -46,5 +50,13 @@ class System {
 
     public function getIdentifier() {
         return base64_encode($this->getMember('name'));
+    }
+
+    public function getPage($idx) {
+        return $this->getMember('pageOrder')->getPage($idx);
+    }
+
+    public function getPath() {
+        return $this->path;
     }
 }
