@@ -13,10 +13,12 @@ class Question
     private $question;
     private $answerType;
     private $answers;
+    private $required;
 
     public function __construct($data) {
         $this->id = $data->id;
         $this->question = $data->question;
+        $this->required = isset($data->required) &&  boolval($data->required);
         $this->answerType = $this->parseAnswerType($data->answerType);
         if(isset($data->answers) && is_array($data->answers)) {
             $this->answers = [];
@@ -54,5 +56,9 @@ class Question
                 // default to text
                 return self::ANSWER_TYPE_TEXT;
         }
+    }
+
+    public function isRequired() {
+        return $this->required;
     }
 }

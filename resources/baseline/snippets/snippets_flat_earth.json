@@ -65,5 +65,10 @@
             "shownUrl": "https://pursuit.unimelb.edu.au › articles › why-do-some...",
             "text": "11 Jan 2019 — Although science says the Earth is round, there are some people around who still think it's flat; two University of Melbourne experts look ..."
         }
+    ],
+    "question": "How credible do you rate this snippet on a scale from 1 to 7?",
+    "answerType": "radio",
+    "answers": [
+        "1", "2", "3", "4", "5", "6", "7"
     ]
 }

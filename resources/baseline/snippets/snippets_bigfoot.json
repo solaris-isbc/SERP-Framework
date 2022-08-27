@@ -72,5 +72,10 @@
             "shownUrl": "https://www.popularmechanics.com › ... › Outdoors",
             "text": "5 Aug 2021 — Is Bigfoot\n                                    real? For centuries, people have reportedly seen this mythical, huge\n                                primate-like animal in the woods of North America."
         }
+    ],
+    "question": "How credible do you rate this snippet on a scale from 1 to 7?",
+    "answerType": "radio",
+    "answers": [
+        "1", "2", "3", "4", "5", "6", "7"
     ]
 }

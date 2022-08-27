@@ -1,14 +1,15 @@
 <p>
-    <?= ($question->getQuestion())."
+    <?= ($question)."
 " ?>
 </p>
+
 <div>
-    <?php $cnt=0; foreach (($question->getAnswers()?:[]) as $answer): $cnt++; ?>
-        <label for="<?= ($question->getId()) ?>_<?= ($cnt) ?>">
+    <?php $cnt=0; foreach (($answers?:[]) as $answer): $cnt++; ?>
+        <label for="<?= ($id) ?>_<?= ($cnt) ?>">
             <?= ($answer)."
 " ?>
         </label>
-        <input type="checkbox" name="<?= ($question->getId()) ?>" id="<?= ($question->getId()) ?>_<?= ($cnt) ?>" value="<?= ($cnt) ?>">  
+        <input type="checkbox" name="<?= ($id) ?>" id="<?= ($id) ?>_<?= ($cnt) ?>" value="<?= ($cnt) ?>">  
     <?php endforeach; ?>
 
 </div>

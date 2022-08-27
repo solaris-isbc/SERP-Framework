@@ -1,12 +1,12 @@
 <p>
-    {{ @question->getQuestion() }}
+    {{ @question }}
 </p>
 <div>
-    <repeat group="{{ @question->getAnswers() }}" value="{{ @answer }}" counter="{{ @cnt }}">
-        <label for="{{ @question->getId() }}_{{ @cnt }}">
+    <repeat group="{{ @answers }}" value="{{ @answer }}" counter="{{ @cnt }}">
+        <label for="{{ @id }}_{{ @cnt }}">
             {{ @answer }}
         </label>
-        <input type="radio" name="{{ @question->getId() }}" id="{{ @question->getId() }}_{{ @cnt }}" value="{{ @cnt }}">  
+        <input type="radio" <check if="{{ @isRequired }}">required</check> name="{{ @id }}" id="{{ @id }}_{{ @cnt }}" value="{{ @cnt }}">  
     </repeat>
 
 </div>

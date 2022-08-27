@@ -1,4 +1,4 @@
-<label for="{{ @question->getId() }}">
-    {{ @question->getQuestion() }}
+<label for="{{ @id }}">
+    {{ @question }}
 </label>
-<input type="text" name="{{ @question->getId() }}" id="{{ @question->getId() }}">  
+<input type="text" <check if="{{ @isRequired }}">required</check> name="{{ @id }}" id="{{ @id }}">  

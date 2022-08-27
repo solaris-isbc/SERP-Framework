@@ -10,8 +10,6 @@ class Questionnaire
     private $description;
     private $questions = [];
 
-    //TODO Create this alike the snippets class
-
     public function __construct($data) {
         $this->id = $data->id;
         $this->name = $data->name;

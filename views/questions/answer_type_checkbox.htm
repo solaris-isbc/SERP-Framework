@@ -1,12 +1,13 @@
 <p>
-    {{ @question->getQuestion() }}
+    {{ @question }}
 </p>
+{* checkboxes can't be required because it would need "required" attribute on answer basis *}
 <div>
-    <repeat group="{{ @question->getAnswers() }}" value="{{ @answer }}" counter="{{ @cnt }}">
-        <label for="{{ @question->getId() }}_{{ @cnt }}">
+    <repeat group="{{ @answers }}" value="{{ @answer }}" counter="{{ @cnt }}">
+        <label for="{{ @id }}_{{ @cnt }}">
             {{ @answer }}
         </label>
-        <input type="checkbox" name="{{ @question->getId() }}" id="{{ @question->getId() }}_{{ @cnt }}" value="{{ @cnt }}">  
+        <input type="checkbox" name="{{ @id }}" id="{{ @id }}_{{ @cnt }}" value="{{ @cnt }}">  
     </repeat>
 
 </div>

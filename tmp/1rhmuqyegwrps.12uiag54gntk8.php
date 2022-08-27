@@ -1,5 +1,5 @@
-<div class='snippet'>
-    <div class='snippet-title'><?= ($snippet->title) ?></div>
-    <div class='snippet-url'><?= ($snippet->url) ?></div>
-    <div class='snippet-text'><?= ($snippet->text) ?></div>
-</div>
+<div id="serp_result">
+    <span id="serp_url"><?= ($snippet->url) ?></span><div class="arrow_container"><span class="down_arrow"></span></div><br>
+    <span id="serp_title"><?= ($snippet->title) ?></span><br>
+    <span id="serp_meta"><?= ($snippet->text) ?></span>
+  </div>

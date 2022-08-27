@@ -1,5 +1,5 @@
-<label for="<?= ($question->getId()) ?>">
-    <?= ($question->getQuestion())."
+<label for="<?= ($id) ?>">
+    <?= ($question)."
 " ?>
 </label>
-<input type="text" name="<?= ($question->getId()) ?>" id="<?= ($question->getId()) ?>">  
+<input type="text" <?php if ($isRequired): ?>required<?php endif; ?> name="<?= ($id) ?>" id="<?= ($id) ?>">  
