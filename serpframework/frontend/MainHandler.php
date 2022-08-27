@@ -4,6 +4,7 @@ namespace serpframework\frontend;
 
 use serpframework\config\Configuration;
 use serpframework\config\Snippets;
+use serpframework\config\Questionnaire;
 
 class MainHandler
 {
@@ -39,7 +40,7 @@ class MainHandler
         if(isset($pageData->snippets)){
             $snippets = new Snippets($pageData);
             $this->f3->set('templatePath', $templatePath);
-            $this->f3->set('snippets', $snippets->getSnippets());
+            $this->f3->set('snippets', $snippets);
             $this->f3->set('scope', 'serp');
     
             echo \Template::instance()->render('views/page.htm');    
@@ -47,6 +48,7 @@ class MainHandler
             // TODO: Questionnaire
             $questionnaire = new Questionnaire($pageData);
             $this->f3->set('scope', 'questionnaire');
+            $this->f3->set('questionnaire', $questionnaire);
             echo \Template::instance()->render('views/page.htm');    
 
         }

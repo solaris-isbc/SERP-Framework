@@ -1,11 +1,15 @@
 {
+    "id": "q1",
     "name": "Pre-Task-Questionnaire",
+    "description": "Please fill the following questions",
     "questions": [
         {
+            "id": "qs1",
             "question": "What is your experience with conspiracy theories?",
             "answerType": "text"
         },
         {
+            "id": "qs2",
             "question": "In how many conspiracy theories do you believe in?",
             "answerType": "radio",
             "answers": [
@@ -16,6 +20,7 @@
             ]
         },
         {
+            "id": "qs3",
             "question": "Which of the following do you own?",
             "answerType": "checkbox",
             "answers": [

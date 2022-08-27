@@ -1,0 +1,10 @@
+{* have to add full namespace for questions *}
+<check if="{{ @question->getAnswerType() == serpframework\config\Question::ANSWER_TYPE_TEXT }}">
+        <include href="views/questions/answer_type_text.htm" />
+</check>
+<check if="{{ @question->getAnswerType() == serpframework\config\Question::ANSWER_TYPE_CHECKBOX }}">
+        <include href="views/questions/answer_type_checkbox.htm" />  
+</check>
+<check if="{{ @question->getAnswerType() == serpframework\config\Question::ANSWER_TYPE_RADIO }}">
+        <include href="views/questions/answer_type_radio.htm" />
+</check>

@@ -1,0 +1,13 @@
+<p>
+    {{ @question->getQuestion() }}
+</p>
+<div>
+    <repeat group="{{ @question->getAnswers() }}" value="{{ @answer }}" counter="{{ @cnt }}">
+        <label for="{{ @question->getId() }}_{{ @cnt }}">
+            {{ @answer }}
+        </label>
+        <input type="checkbox" name="{{ @question->getId() }}" id="{{ @question->getId() }}_{{ @cnt }}" value="{{ @cnt }}">  
+    </repeat>
+
+</div>
+

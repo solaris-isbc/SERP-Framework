@@ -1,15 +1,18 @@
 <check if="{{ @scope=='serp' }}">
-    <true>
-        <include href="views/serp_header.htm" />
-        <repeat group="{{ @snippets }}" value="{{ @snippet }}">
-            <include href="{{ @templatePath }}" />
-        </repeat>
-        <include href="views/serp_footer.htm" />
-    </true>
+    <include href="views/serp_header.htm" />
+    <repeat group="{{ @snippets->getSnippets() }}" value="{{ @snippet }}">
+        <include href="{{ @templatePath }}" />
+    </repeat>
+    <include href="views/serp_footer.htm" />
 </check>
 <check if="{{ @scope=='questionnaire' }}">
-<true>
-
-    HERE BE QUESTIONS
-</true>
+    <check if="{{ @questionnaire->getName() != null }}">
+        <h1>{{ @questionnaire->getName() }}</h1>
     </check>
+    <check if="{{ @questionnaire->getDescription() != null }}">
+        <p>{{ @questionnaire->getDescription() }}</p>
+    </check>
+    <repeat group="{{ @questionnaire->getQuestions() }}" value="{{ @question }}">
+        <include href="views/questions/question.htm" />
+    </repeat>
+</check>
