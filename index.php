@@ -2,6 +2,7 @@
 require 'vendor/autoload.php';
 
 use serpframework\frontend\MainHandler;
+use serpframework\persistence\DatabaseHandler;
 
 error_reporting(-1);
 ini_set('display_errors', '1');
@@ -34,4 +35,17 @@ $f3->route('GET /',
         $mainHandler->displayEntryPage();
     }
 );
+
+
+$f3->route('GET /dbtest',
+    function($f3) {
+        echo "<pre>";
+        $databaseHandler = new DatabaseHandler();
+        // $databaseHandler->participantsStore->deleteStore();
+        var_dump($databaseHandler->fetchAllParticipants());
+
+        echo "</pre>";
+    }
+);
+
 $f3->run();

@@ -2,9 +2,12 @@
 
 namespace serpframework\frontend;
 
+use DateTime;
 use serpframework\config\Configuration;
 use serpframework\config\Snippets;
 use serpframework\config\Questionnaire;
+use serpframework\persistence\DatabaseHandler;
+use serpframework\persistence\models\Participant;
 
 class MainHandler
 {
@@ -12,23 +15,29 @@ class MainHandler
     private $f3;
 
     private $system;
+    private $participant;
+
+    private $databaseHandler;
 
     public function __construct($f3)
     {
         $this->config = new Configuration(dirname(__FILE__) . '/../../resources/config.json');   
         $this->f3 = $f3;
+        $this->databaseHandler = new DatabaseHandler();
     }
 
     private function handleEntry() {
         // cookie user for IDing
-        $userId = $this->identifyUser();
+        $participant = $this->identifyUser();
         // user might already be assigned to a system, get it 
-        $system = $this->getUserSystem();
+        $system = $this->getUserSystem($participant);
         if(!$system){
             // assign user to system
-            $system = $this->chooseSystem($userId);
+            $system = $this->chooseSystem($participant);
+            // store user data in DB
+            $this->databaseHandler->addParticipant($participant);
         }
-        $this->system = $system;
+        $this->system = $system;        
     }
 
     public function storeData(){
@@ -93,38 +102,55 @@ class MainHandler
         echo \Template::instance()->render('views/entry_page.htm');
     }
 
-    private function chooseSystem($userId) {
-        // TODO: based on amount of participating people, choose the system with the least participants
+    private function chooseSystem(&$participant) {
         // if there's multiple equally low participated systems, choose one randomly
         // also lock user into the currently chosen system, but only increase user count once he has answered at least one page
         // for this, the database layer needs to be implemented         
-        $chosenSystem = $this->config->getSystems()[0];
 
-        $this->assignUserToSystem($chosenSystem);
+        //sleek DB doesn't support count, so we do the counting ourselves
+        $participantCounts = $this->databaseHandler->getSystemUserCounts();
+      
+        $allSystems = [];
+        // initialize a list of all system ids with count 0
+        foreach($this->config->getSystems() as $system) {
+            $allSystems[$system->getIdentifier()] = 0;
+        }
+
+        // merge it with the participant counts, later key values override earlier ones
+        $allSystems = array_merge($allSystems, $participantCounts);
+
+        // get list of minimum values
+        $minSystems = array_keys($allSystems, min($allSystems));
+    
+        // choose randomly from minimal systems
+        $chosenSystem = $this->config->getSystemById(array_rand(array_flip($minSystems)));
+
+        $this->assignUserToSystem($participant, $chosenSystem);
 
         return $chosenSystem;
     }
 
     private function identifyUser() {
         if(isset($_COOKIE['serp_system_user'])) {
-            return $_COOKIE['serp_system_user'];
+            // try to load user from DB
+            $participant = $this->databaseHandler->findParticipant($_COOKIE['serp_system_user']);
+            if($participant){
+                return $participant;                
+            }
         }
+        // user is new or not found in DB, generate ID and create "empty" participant
         $userId = base64_encode(random_bytes(18));
         setcookie( "serp_system_user", $userId, strtotime( '+30 days' ), '/' );
-
-        return $userId;
+        $participant = new Participant($userId, null, (new \DateTime())->format('Y-m-d H:i:s'));
+        return $participant;
     }
 
-    private function assignUserToSystem($system) {
-        if(isset($_COOKIE['serp_system_system'])) {
-            return $_COOKIE['serp_system_system'];
-        }
-        setcookie( "serp_system_system", $system->getIdentifier(), strtotime( '+30 days' ), '/' );
-        return $system->getIdentifier();
+    private function assignUserToSystem(&$participant, $system) {
+        $participant->setSystemId($system->getIdentifier());
     }
 
-    private function getUserSystem(){
-        $systemId =  $_COOKIE['serp_system_system'] ?? null;
+    private function getUserSystem($participant){
+        $systemId = $participant->getSystemId() ?? null;
         return $this->config->getSystemById($systemId) ?? '';
     }
 }
