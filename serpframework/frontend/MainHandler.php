@@ -35,6 +35,16 @@ class MainHandler
     public function displayPage($page) {
         $this->handleEntry();
         $pageData = $this->findPageData($this->system->getPage($page));
+
+        if(!$pageData) {
+            // reached the end of the experiment
+            // show thank you page
+            // TODO: mark participant as completed
+            echo \Template::instance()->render('views/thank_you.htm');    
+
+            return;
+        }
+
         $templatePath = $this->system->getTemplatePath();
         $this->f3->set('system', $this->system);
         if(isset($pageData->snippets)){
@@ -53,9 +63,11 @@ class MainHandler
     }
 
     private function findPageData($filename) {
+        if(!$filename) {
+            return null;
+        }
         // scan the system folders for the file, prioritizing first questionnaires, then snippets
         $mainPath = dirname(__FILE__) . '/../../resources/' . $this->system->getFolder();
-
         if(file_exists($mainPath . '/questionnaires/' . $filename)) {
             return json_decode(file_get_contents($mainPath . '/questionnaires/' . $filename));
         }
