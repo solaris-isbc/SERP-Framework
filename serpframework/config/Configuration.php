@@ -45,7 +45,7 @@ class Configuration {
     }
 
     public function getSystemById($id) {
-        $systemName = base64_decode($id);
+        $systemName = base64_decode($id ?? '');
         foreach($this->systems as $system) {
             if($system->getMember('name') == $systemName) {
                 return $system;

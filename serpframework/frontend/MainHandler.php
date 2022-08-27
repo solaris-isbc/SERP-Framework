@@ -22,7 +22,6 @@ class MainHandler
     private function handleEntry() {
         // cookie user for IDing
         $userId = $this->identifyUser();
-
         // user might already be assigned to a system, get it 
         $system = $this->getUserSystem();
         if(!$system){
@@ -30,6 +29,11 @@ class MainHandler
             $system = $this->chooseSystem($userId);
         }
         $this->system = $system;
+    }
+
+    public function storeData(){
+        // var_dump($_POST);
+        // die;
     }
 
     public function displayPage($page) {
@@ -106,7 +110,7 @@ class MainHandler
             return $_COOKIE['serp_system_user'];
         }
         $userId = base64_encode(random_bytes(18));
-        setcookie( "serp_system_user", $userId, strtotime( '+30 days' ) );
+        setcookie( "serp_system_user", $userId, strtotime( '+30 days' ), '/' );
 
         return $userId;
     }
@@ -115,12 +119,12 @@ class MainHandler
         if(isset($_COOKIE['serp_system_system'])) {
             return $_COOKIE['serp_system_system'];
         }
-        echo "assigned user to system";
-        setcookie( "serp_system_system", $system->getIdentifier(), strtotime( '+30 days' ) );
+        setcookie( "serp_system_system", $system->getIdentifier(), strtotime( '+30 days' ), '/' );
+        return $system->getIdentifier();
     }
 
     private function getUserSystem(){
         $systemId =  $_COOKIE['serp_system_system'] ?? null;
-        return $this->config->getSystemById($systemId);
+        return $this->config->getSystemById($systemId) ?? '';
     }
 }

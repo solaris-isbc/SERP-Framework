@@ -1,39 +1,68 @@
 <html>
+
 <head>
-    <link rel="stylesheet" href="/resources/{{ @system->getFolder() }}/global.css" />     
+    <link rel="stylesheet" href="/bootstrap.min.css" />
+    <link rel="stylesheet" href="/resources/{{ @system->getFolder() }}/global.css" />
 </head>
 
 <body>
 
-<check if="{{ @scope=='serp' }}">
-    <div id="serp_preview">
+    <check if="{{ @scope=='serp' }}">
+        <div id="serp_preview">
 
-    <include href="views/serp_header.htm" />
-    <form method="POST">
-        <repeat group="{{ @snippets->getSnippets() }}" value="{{ @snippet }}">
-            <include href="{{ @templatePath }}" />
-            <include href="views/questions/question.htm" with="$answerType={{ @snippets->getAnswerType() }},$question={{ $snippets->getQuestion() }},$id={{ $snippet->getId() }},$answers={{ $snippets->getAnswers() }},$isRequired={{ true }}" />
+            <include href="views/serp_header.htm" />
+            <form method="POST">
+                <repeat group="{{ @snippets->getSnippets() }}" value="{{ @snippet }}">
+                    <include href="{{ @templatePath }}" />
+                    <include href="views/questions/question.htm"
+                        with="$answerType={{ @snippets->getAnswerType() }},$question={{ $snippets->getQuestion() }},$id={{ $snippet->getId() }},$answers={{ $snippets->getAnswers() }},$isRequired={{ true }}" />
 
-        </repeat>
-        <div class="">
-            <button type="submit" name="submit">Weiter</button>
+                </repeat>
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" name="submit">Weiter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
-    </div>
-</check>
-<check if="{{ @scope=='questionnaire' }}">
-    <form method="POST">
-        <check if="{{ @questionnaire->getName() != null }}">
-            <h1>{{ @questionnaire->getName() }}</h1>
-        </check>
-        <check if="{{ @questionnaire->getDescription() != null }}">
-            <p>{{ @questionnaire->getDescription() }}</p>
-        </check>
-        <repeat group="{{ @questionnaire->getQuestions() }}" value="{{ @question }}">
-            <include href="views/questions/question.htm" with="$answerType={{ @question->getAnswerType() }},$question={{ $question->getQuestion() }},$id={{ $question->getId() }},$answers={{ $question->getAnswers() }},$isRequired={{ $question->isRequired() }}" />
-        </repeat>
-        <div class="">
-            <button type="submit" name="submit">Weiter</button>
+    </check>
+    <check if="{{ @scope=='questionnaire' }}">
+        <div class="container">
+            <form method="POST">
+                <check if="{{ @questionnaire->getName() != null }}">
+                    <div class="row">
+                        <div class="col">
+                            <h1>{{ @questionnaire->getName() }}</h1>
+                        </div>
+                    </div>
+                </check>
+                <check if="{{ @questionnaire->getDescription() != null }}">
+                    <div class="row">
+                        <div class="col">
+                            <p>{{ @questionnaire->getDescription() }}</p>
+                        </div>
+                    </div>
+                </check>
+                <repeat group="{{ @questionnaire->getQuestions() }}" value="{{ @question }}">
+                    <div class="row">
+                        <div class="col">
+
+                            <include href="views/questions/question.htm"
+                                with="$answerType={{ @question->getAnswerType() }},$question={{ $question->getQuestion() }},$id={{ $question->getId() }},$answers={{ $question->getAnswers() }},$isRequired={{ $question->isRequired() }}" />
+                        </div>
+                    </div>
+                </repeat>
+                <div class="row">
+                    <div class="col">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary" name="submit">Weiter</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
-</check>
+    </check>

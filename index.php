@@ -22,7 +22,7 @@ $f3->route('POST /page/@page',
         $mainHandler = new MainHandler($f3);
         $page = intval($f3->get('PARAMS.page'));
 
-//        $mainHandler->storeData();
+        $mainHandler->storeData();
 
         $f3->reroute('/page/' . ($page + 1));
     }

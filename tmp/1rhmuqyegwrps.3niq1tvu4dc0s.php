@@ -1,7 +1,37 @@
-<h1><?= ($projectTitle) ?></h1>
-<h4><?= ($author) ?></h4>
-<p><?= ($taskDescription) ?></p>
-<p> <?= ($agreementText) ?> </p>
-<form method="GET" action="/page/0">
-    <button type="submit">weiter</button>
-</form>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1><?= ($projectTitle) ?></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h4><?= ($author) ?></h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p><?= ($taskDescription) ?></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <p> <?= ($agreementText) ?> </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form method="GET" action="/page/0">
+                    <button type="submit">weiter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>

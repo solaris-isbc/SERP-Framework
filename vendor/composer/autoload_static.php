@@ -6,6 +6,20 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b
 {
+    public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'SleekDB\\' => 8,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'SleekDB\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rakibtg/sleekdb/src',
+        ),
+    );
+
     public static $classMap = array (
         'Audit' => __DIR__ . '/..' . '/bcosca/fatfree-core/audit.php',
         'Auth' => __DIR__ . '/..' . '/bcosca/fatfree-core/auth.php',
@@ -54,6 +68,8 @@ class ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b::$classMap;
 
         }, null, ClassLoader::class);
