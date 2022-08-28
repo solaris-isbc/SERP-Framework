@@ -37,15 +37,41 @@ $f3->route('GET /',
 );
 
 
-$f3->route('GET /dbtest',
+$f3->route('GET /dump/@store',
     function($f3) {
+        $store = $f3->get('PARAMS.store');
         echo "<pre>";
         $databaseHandler = new DatabaseHandler();
         // $databaseHandler->participantsStore->deleteStore();
-        var_dump($databaseHandler->fetchAllParticipants());
+        // $databaseHandler->answerStore->deleteStore();
+        // $databaseHandler->dataPointStore->deleteStore();
+
+        var_dump($databaseHandler->{$store}->findAll());
 
         echo "</pre>";
     }
 );
+
+
+$f3->route('GET /clearStores',
+    function($f3) {
+        echo "<pre>";
+        $databaseHandler = new DatabaseHandler();
+        $databaseHandler->participantsStore->deleteStore();
+        $databaseHandler->answerStore->deleteStore();
+        $databaseHandler->dataPointStore->deleteStore();
+        echo "</pre>";
+    }
+);
+
+$f3->route('GET /dbtest',
+    function($f3) {
+        echo "<pre>";
+        $databaseHandler = new DatabaseHandler();
+        $databaseHandler->getSystemUserCounts();
+        echo "</pre>";
+    }
+);
+
 
 $f3->run();

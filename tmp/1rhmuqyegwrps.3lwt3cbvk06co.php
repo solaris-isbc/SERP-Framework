@@ -12,6 +12,8 @@
 
             <?php echo $this->render('views/serp_header.htm',NULL,get_defined_vars(),0); ?>
             <form method="POST">
+                <input type="hidden" name="pagetype" value="SERP" />
+                <input type="hidden" name="pageId" value="<?= ($snippets->getId()) ?>" />
                 <?php foreach (($snippets->getSnippets()?:[]) as $snippet): ?>
                     <?php echo $this->render($templatePath,NULL,get_defined_vars(),0); ?>
                     <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$snippets->getAnswerType() ,'question'=>$snippets->getQuestion() ,'id'=>$snippet->getId() ,'answers'=>$snippets->getAnswers() ,'isRequired'=>true]+get_defined_vars(),0); ?>
@@ -32,6 +34,9 @@
     <?php if ($scope=='questionnaire'): ?>
         <div class="container">
             <form method="POST">
+                <input type="hidden" name="pagetype" value="QUESTIONNAIRE" />
+                <input type="hidden" name="pageid" value="<?= ($questionnaire->getId()) ?>" />
+
                 <?php if ($questionnaire->getName() != null): ?>
                     <div class="row">
                         <div class="col">

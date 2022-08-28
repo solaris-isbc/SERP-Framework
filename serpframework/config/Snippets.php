@@ -15,6 +15,7 @@ class Snippets
     private $snippets = [];
     private $order;
     private $query;
+    private $id;
 
     private $question;
     private $answerType;
@@ -33,6 +34,7 @@ class Snippets
         }
 
         $this->question = $data->question;
+        $this->id = $data->id;
         $this->answerType = $this->parseAnswerType($data->answerType);
         if(isset($data->answers) && is_array($data->answers)) {
             $this->answers = [];
@@ -61,6 +63,10 @@ class Snippets
 
     public function getAnswers() {
         return $this->answers ?? [];
+    }
+
+    public function getId() {
+        return $this->id;
     }
 
     private function parseAnswerType($answerType) {

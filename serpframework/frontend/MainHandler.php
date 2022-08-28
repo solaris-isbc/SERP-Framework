@@ -28,31 +28,47 @@ class MainHandler
 
     private function handleEntry() {
         // cookie user for IDing
-        $participant = $this->identifyUser();
+        $this->participant = $this->identifyUser();
         // user might already be assigned to a system, get it 
-        $system = $this->getUserSystem($participant);
+        $system = $this->getUserSystem($this->participant);
         if(!$system){
             // assign user to system
-            $system = $this->chooseSystem($participant);
+            $system = $this->chooseSystem($this->participant);
             // store user data in DB
-            $this->databaseHandler->addParticipant($participant);
+            $this->databaseHandler->addParticipant($this->participant);
         }
         $this->system = $system;        
     }
 
     public function storeData(){
-        // var_dump($_POST);
-        // die;
+        $this->handleEntry();
+
+        $pageType = $_POST["pagetype"] ?? "";
+        $pageId = $_POST["pageid"] ?? "";
+
+        $answers = [];
+
+        foreach($_POST as $id => $value) {
+            if($id == "submit" || $id == "pagetype" || $id == "pageid") {
+                // ignore the submit button
+                continue;
+            }
+            $questionId = $id;
+            $questionValue = $value;
+            $this->databaseHandler->storeAnswer($this->participant, $this->system, $questionId, $questionValue, $pageType);
+
+        }
     }
 
     public function displayPage($page) {
         $this->handleEntry();
         $pageData = $this->findPageData($this->system->getPage($page));
 
-        if(!$pageData) {
+        if(!$pageData || $this->participant->isCompleted()) {
             // reached the end of the experiment
             // show thank you page
-            // TODO: mark participant as completed
+            $this->databaseHandler->markCompleted($this->participant);
+
             echo \Template::instance()->render('views/thank_you.htm');    
 
             return;

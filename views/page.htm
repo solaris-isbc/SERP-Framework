@@ -12,6 +12,8 @@
 
             <include href="views/serp_header.htm" />
             <form method="POST">
+                <input type="hidden" name="pagetype" value="SERP" />
+                <input type="hidden" name="pageId" value="{{ @snippets->getId() }}" />
                 <repeat group="{{ @snippets->getSnippets() }}" value="{{ @snippet }}">
                     <include href="{{ @templatePath }}" />
                     <include href="views/questions/question.htm"
@@ -33,6 +35,9 @@
     <check if="{{ @scope=='questionnaire' }}">
         <div class="container">
             <form method="POST">
+                <input type="hidden" name="pagetype" value="QUESTIONNAIRE" />
+                <input type="hidden" name="pageid" value="{{ @questionnaire->getId() }}" />
+
                 <check if="{{ @questionnaire->getName() != null }}">
                     <div class="row">
                         <div class="col">
