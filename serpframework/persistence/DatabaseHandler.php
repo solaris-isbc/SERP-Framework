@@ -159,31 +159,71 @@ class DatabaseHandler
             ->join(function ($answer) use ($participantsStore) {
                 // returns result
                 return $participantsStore->findBy(["participantId", "=", $answer["participantId"]]);
-            }, "comments");
+            }, "participants");
         }, "questionData")
         ->getQuery()
         ->fetch();
 
-        $outrow = [];
+        $outrows = [];
         $data = [];
         foreach($fullData as $row) {
-          
-            if(!in_array($row['key'], $data)) {
-                // first we prepare data
-                $data[] = $row['key'];
+            $outrow = [];
+            foreach($row['questionData'] as $questionData) {
+                $outrow = [
+                    "participant" => $questionData['participantId'],
+                    "system" => base64_decode($questionData['systemId']),
+                    "created" => $row['createdAt']['date'],
+                    "question" => $row['key'],
+                    "answer" => $row['value'],
+                ];
+                $outrows[] = $outrow;
+    
             }
-
         }  
 
-        foreach($fullData as $row) {
-            $outrow = [
-                
-            ]
-           
+     
+        $parsedOutrows = [];
+        foreach($outrows as $row) {
+            if(!isset($parsedOutrows[$row["participant"]])){
+                $parsedOutrows[$row['participant']] = [
+                    "participant" => $row["participant"],
+                    "system" => $row["system"]
+                ];
+            }
+            $key = $row['question'];
+            $parsedOutrows[$row['participant']]['answer_' . $key] = $row['answer'];
+            $parsedOutrows[$row['participant']]['time_answer_' . $key] = $row['created'];
+        }
 
-        }  
 
-        var_dump($data);
+        // output csv
+
+        $file = "output.csv";
+        $txt = fopen($file, "w");
+        $isHeader = true;
+        foreach($parsedOutrows as $key => $value) {
+            // TODO: escape csv
+            // TODO: remove pre tags wherever they are coming from
+            if($isHeader) {
+                $line = implode(';', array_keys($value)) . PHP_EOL;
+                fwrite($txt, $line);
+                $isHeader = false;
+            }
+            $line = implode(';', $value) . PHP_EOL;
+            fwrite($txt, $line);
+        }
+
+        fclose($txt);
+
+        header('Content-Description: File Transfer');
+        header('Content-Disposition: attachment; filename='.basename($file));
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
+        header("Content-Type: text/plain");
+        readfile($file);
+
     }
 
     private function parseAnswerType($answerType)
