@@ -9,33 +9,23 @@ ini_set('display_errors', '1');
 $f3 = \Base::instance();
 
 // display the nth page
-$f3->route('GET /page/@page',
+$f3->route('GET /',
     function($f3) {
         $mainHandler = new MainHandler($f3);
-        $page = intval($f3->get('PARAMS.page'));
-        $mainHandler->displayPage($page);
+        $mainHandler->displayPage();
     }
 );
 
 // store date for nth page and redirect to next one
-$f3->route('POST /page/@page',
+$f3->route('POST /',
     function($f3) {
         $mainHandler = new MainHandler($f3);
-        $page = intval($f3->get('PARAMS.page'));
 
         $mainHandler->storeData();
 
-        $f3->reroute('/page/' . ($page + 1));
+        $f3->reroute('/');
     }
 );
-
-$f3->route('GET /',
-    function($f3) {
-        $mainHandler = new MainHandler($f3);
-        $mainHandler->displayEntryPage();
-    }
-);
-
 
 $f3->route('GET /dump/@store',
     function($f3) {
@@ -65,11 +55,11 @@ $f3->route('GET /clearStores',
     }
 );
 
-$f3->route('GET /dbtest',
+$f3->route('GET /export',
     function($f3) {
         echo "<pre>";
         $databaseHandler = new DatabaseHandler();
-        $databaseHandler->getSystemUserCounts();
+        $databaseHandler->exportData();
         echo "</pre>";
     }
 );

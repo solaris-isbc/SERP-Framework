@@ -45,7 +45,7 @@
         <div class="container">
             <form method="POST">
                 <input type="hidden" name="pagetype" value="QUESTIONNAIRE" />
-                <input type="hidden" name="pageid" value="<?= ($questionnaire->getId()) ?>" />
+                <input type="hidden" name="pageId" value="<?= ($questionnaire->getId()) ?>" />
 
                 <?php if ($questionnaire->getName() != null): ?>
                     <div class="row">

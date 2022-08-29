@@ -114,11 +114,15 @@ class DatabaseHandler
 
     public function getCompletedPages($participant)
     {
+        // $this->answerStore->findOneBy()
+        // TODO: fix invalid join qurey
         $answerStore = $this->answerStore;
         $dataPointsWithAnswers = $this->dataPointStore
         ->createQueryBuilder()
         ->join(function ($dataPoint) use ($answerStore, $participant) {
-            return $answerStore->findOneBy([["dataPointId", "=", $dataPoint["_id"]], "AND", ['participantId', '=', $participant->getId()]]);
+            return $answerStore->findBy(
+                ["dataPointId", "=",  $dataPoint["_id"]]
+            );
         }, "answer")
         ->getQuery()
         ->fetch();
@@ -126,14 +130,60 @@ class DatabaseHandler
         // fetch the completed pages from the datapoints
         $completedPages = [];
         foreach ($dataPointsWithAnswers as $dataPoint) {
-            $pageId = isset($dataPoint['answer']['pageId']) ? $dataPoint['answer']['pageId'] : null;
-            if (!$pageId || in_array($pageId, $completedPages)) {
+            $pageId = isset($dataPoint['answer'][0]['pageId']) ? $dataPoint['answer'][0]['pageId'] : null;
+            if (!$pageId || in_array($pageId, $completedPages) || $dataPoint['answer'][0]['participantId'] != $participant->getId()) {
                 continue;
             }
             $completedPages[] = $pageId;
         }
 
-        return [];
+        return $completedPages;
+    }
+
+
+    public function exportData()
+    {
+        // TODO: somehow make compatible so only data points get stored which are based on systems
+        // give them context as well?
+        // export main data
+        // query EVERYTHING
+        $answerStore = $this->answerStore;
+        $participantsStore = $this->participantsStore;
+        $fullData = $this->dataPointStore
+        ->createQueryBuilder()
+        ->join(function ($dataPoint) use ($answerStore, $participantsStore) {
+            // returns QueryBuilder
+            return $answerStore
+            ->createQueryBuilder()
+            ->where([ "dataPointId", "=", $dataPoint["_id"] ])
+            ->join(function ($answer) use ($participantsStore) {
+                // returns result
+                return $participantsStore->findBy(["participantId", "=", $answer["participantId"]]);
+            }, "comments");
+        }, "questionData")
+        ->getQuery()
+        ->fetch();
+
+        $outrow = [];
+        $data = [];
+        foreach($fullData as $row) {
+          
+            if(!in_array($row['key'], $data)) {
+                // first we prepare data
+                $data[] = $row['key'];
+            }
+
+        }  
+
+        foreach($fullData as $row) {
+            $outrow = [
+                
+            ]
+           
+
+        }  
+
+        var_dump($data);
     }
 
     private function parseAnswerType($answerType)
