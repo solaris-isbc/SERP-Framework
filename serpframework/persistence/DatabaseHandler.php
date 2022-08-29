@@ -38,10 +38,11 @@ class DatabaseHandler
         $this->participantsStore->insert($participant->getDbRepresentation());
     }
 
-    public function findParticipant($id) {
+    public function findParticipant($id)
+    {
         $data = $this->participantsStore->findOneBy(["id", "=", $id]);
         // if participant somehow was not found
-        if(!$data){
+        if (!$data) {
             return null;
         }
         $participant = new Participant();
@@ -49,39 +50,40 @@ class DatabaseHandler
         return $participant;
     }
 
-    public function markCompleted(&$participant) {
+    public function markCompleted(&$participant)
+    {
         $participant->setCompleted();
         $this->participantsStore->update($participant->getDbRepresentation());
     }
 
-    public function fetchAllParticipants() {
+    public function fetchAllParticipants()
+    {
         return $this->participantsStore->findAll();
     }
 
-    public function getSystemUserCounts() {
-        $participants = $this->participantsStore->findAll();
-
+    public function getSystemUserCounts()
+    {
         $answerStore = $this->answerStore;
         $participantsWithAnswers = $this->participantsStore
         ->createQueryBuilder()
-        ->join(function($participant) use ($answerStore) {
+        ->join(function ($participant) use ($answerStore) {
             return $answerStore->findBy(["participantId", "=", $participant["id"]]);
         }, "answers")
         ->getQuery()
         ->fetch();
 
 
-        if(!$participantsWithAnswers) {
+        if (!$participantsWithAnswers) {
             return [];
         }
 
         $counts = [];
-        foreach($participantsWithAnswers as $participant) {
-            if(!isset($counts[$participant['systemId']])) {
+        foreach ($participantsWithAnswers as $participant) {
+            if (!isset($counts[$participant['systemId']])) {
                 $counts[$participant['systemId']] = 0;
             }
             // only count participants that have already submitted answers
-            if(isset($participant['answers']) && count($participant['answers']) > 0){
+            if (isset($participant['answers']) && count($participant['answers']) > 0) {
                 $counts[$participant['systemId']] = $counts[$participant['systemId']] + 1;
             }
         }
@@ -89,31 +91,58 @@ class DatabaseHandler
         return $counts;
     }
 
-    public function storeAnswer($participant, $system, $questionId, $value, $type) {
+    public function storeAnswer($participant, $system, $questionId, $value, $type, $pageId)
+    {
         $type = $this->parseAnswerType($type);
 
         // insert data point first
         $dataPoint = $this->storeDataPoint($value, $questionId);
 
-        $answer = new Answer($participant->getId(), $system->getIdentifier(), $dataPoint->getId(), $type, new \DateTime());
+        $answer = new Answer($participant->getId(), $system->getIdentifier(), $dataPoint->getId(), $pageId, $type, new \DateTime());
 
-        // insert the answer 
+        // insert the answer
         $this->answerStore->insert($answer->getDBRepresentation());
     }
 
-    public function storeDataPoint($value, $key) {
+    public function storeDataPoint($value, $key)
+    {
         $dataPoint = new DataPoint($value, $key, new \DateTime());
         $data = $this->dataPointStore->insert($dataPoint->getDBRepresentation());
         $dataPoint->fillFromDbRepresentation($data);
         return $dataPoint;
     }
 
-    private function parseAnswerType($answerType) {
+    public function getCompletedPages($participant)
+    {
+        $answerStore = $this->answerStore;
+        $dataPointsWithAnswers = $this->dataPointStore
+        ->createQueryBuilder()
+        ->join(function ($dataPoint) use ($answerStore, $participant) {
+            return $answerStore->findOneBy([["dataPointId", "=", $dataPoint["_id"]], "AND", ['participantId', '=', $participant->getId()]]);
+        }, "answer")
+        ->getQuery()
+        ->fetch();
+
+        // fetch the completed pages from the datapoints
+        $completedPages = [];
+        foreach ($dataPointsWithAnswers as $dataPoint) {
+            $pageId = isset($dataPoint['answer']['pageId']) ? $dataPoint['answer']['pageId'] : null;
+            if (!$pageId || in_array($pageId, $completedPages)) {
+                continue;
+            }
+            $completedPages[] = $pageId;
+        }
+
+        return [];
+    }
+
+    private function parseAnswerType($answerType)
+    {
         $type = strtolower($answerType);
         switch($type) {
             case 'serp':
                 return self::ANSWER_TYPE_SERP;
-            case 'questionnaire': 
+            case 'questionnaire':
             default:
                 // default to text
                 return self::ANSWER_TYPE_QUESTIONNAIRE;

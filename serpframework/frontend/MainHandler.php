@@ -11,7 +11,7 @@ use serpframework\persistence\models\Participant;
 
 class MainHandler
 {
-    private $config;
+    public $config;
     private $f3;
 
     private $system;
@@ -44,25 +44,28 @@ class MainHandler
         $this->handleEntry();
 
         $pageType = $_POST["pagetype"] ?? "";
-        $pageId = $_POST["pageid"] ?? "";
+        $pageId = $_POST["pageId"] ?? "";
 
         $answers = [];
 
         foreach($_POST as $id => $value) {
-            if($id == "submit" || $id == "pagetype" || $id == "pageid") {
+            if(strtolower($id) == "submit" || strtolower($id) == "pagetype" || strtolower($id) == "pageid") {
                 // ignore the submit button
                 continue;
             }
             $questionId = $id;
             $questionValue = $value;
-            $this->databaseHandler->storeAnswer($this->participant, $this->system, $questionId, $questionValue, $pageType);
+            $this->databaseHandler->storeAnswer($this->participant, $this->system, $questionId, $questionValue, $pageType, $pageId);
 
         }
     }
 
     public function displayPage($page) {
         $this->handleEntry();
-        $pageData = $this->findPageData($this->system->getPage($page));
+        $completedPageIds = $this->databaseHandler->getCompletedPages($this->participant);
+        $completedPageIds = ["q1"];
+        // TODO: add completedPageIds to system and orders
+        $pageData = $this->system->getPage($completedPageIds);
 
         if(!$pageData || $this->participant->isCompleted()) {
             // reached the end of the experiment
@@ -70,41 +73,24 @@ class MainHandler
             $this->databaseHandler->markCompleted($this->participant);
 
             echo \Template::instance()->render('views/thank_you.htm');    
-
             return;
         }
 
         $templatePath = $this->system->getTemplatePath();
         $this->f3->set('system', $this->system);
-        if(isset($pageData->snippets)){
-            $snippets = new Snippets($pageData);
+
+        // TODO: get this from pageOrder
+        if($pageData instanceof Snippets){
             $this->f3->set('templatePath', $templatePath);
-            $this->f3->set('snippets', $snippets);
+            $this->f3->set('snippets', $pageData);
             $this->f3->set('scope', 'serp');
     
             echo \Template::instance()->render('views/page.htm');    
         }else{
-            $questionnaire = new Questionnaire($pageData);
             $this->f3->set('scope', 'questionnaire');
-            $this->f3->set('questionnaire', $questionnaire);
+            $this->f3->set('questionnaire', $pageData);
             echo \Template::instance()->render('views/page.htm');    
         }
-    }
-
-    private function findPageData($filename) {
-        if(!$filename) {
-            return null;
-        }
-        // scan the system folders for the file, prioritizing first questionnaires, then snippets
-        $mainPath = dirname(__FILE__) . '/../../resources/' . $this->system->getFolder();
-        if(file_exists($mainPath . '/questionnaires/' . $filename)) {
-            return json_decode(file_get_contents($mainPath . '/questionnaires/' . $filename));
-        }
-        if(file_exists($mainPath . '/snippets/' . $filename)) {
-            return json_decode(file_get_contents($mainPath . '/snippets/' . $filename));
-        }
-
-        return null;
     }
 
     public function displayEntryPage() {

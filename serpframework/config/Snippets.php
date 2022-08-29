@@ -36,6 +36,7 @@ class Snippets
         $this->question = $data->question;
         $this->id = $data->id;
         $this->answerType = $this->parseAnswerType($data->answerType);
+       
         if(isset($data->answers) && is_array($data->answers)) {
             $this->answers = [];
             foreach($data->answers as $answer) {

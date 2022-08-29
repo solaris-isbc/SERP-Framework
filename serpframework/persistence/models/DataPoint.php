@@ -20,7 +20,7 @@ class DataPoint implements DbRepresentation
 
     public function getDBRepresentation() {
         return [
-            "id" => $this->_id,
+            "_id" => $this->_id,
             "value" => $this->value,
             "key" => $this->key,
             "createdAt" => $this->createdAt,
@@ -29,7 +29,7 @@ class DataPoint implements DbRepresentation
 
     public function fillFromDbRepresentation($data)
     {
-        $this->id = $data['id'];
+        $this->_id = $data['_id'];
         $this->createdAt = $data['createdAt'];
         $this->value = $data['value'];
         $this->key = $data['key'];

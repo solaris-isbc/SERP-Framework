@@ -20,6 +20,9 @@ class System {
 
         // first we register all relevant members from the json file
         $this->registerMember('name', $data->name, self::VAR_TYPE_PRIMITIVE);
+        if(isset($data->hasDocuments)) {
+            $this->registerMember('hasDocuments', $data->hasDocuments, self::VAR_TYPE_PRIMITIVE);
+        }
         $this->registerMember('task', $data->task, self::VAR_TYPE_OBJECT);
         $this->registerMember('pageOrder', $data->pageOrder, self::VAR_TYPE_OBJECT);
 
@@ -27,6 +30,9 @@ class System {
         // if needed, the members will be transformed into their correct types
         $this->transformMember('task', Task::class);
         $this->transformMember('pageOrder', PageOrder::class);
+        // special case: pageOrder -> we need the context of the system to load further json files
+        // -> pass system for context purpose
+        $this->members['pageOrder']->value->initialize($this);
     }
 
     private function registerMember($name, $value, $type) {
@@ -52,8 +58,8 @@ class System {
         return base64_encode($this->getMember('name'));
     }
 
-    public function getPage($idx) {
-        return $this->getMember('pageOrder')->getPage($idx);
+    public function getPage($completedPages) {
+        return $this->getMember('pageOrder')->getPage($completedPages);
     }
 
     public function getFolder() {

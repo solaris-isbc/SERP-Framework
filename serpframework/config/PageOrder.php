@@ -9,11 +9,12 @@ class PageOrder implements Transformable
 
     private $order = '';
     private $pages = [];
-    
+    private $pageObjects = [];
+
     public function transform($data) {
         $this->order = strtolower($data->order) == "random" ? self::ORDER_TYPE_RANDOM : self::ORDER_TYPE_FIXED;
 
-        // load pages and page groups
+        // load raw pages and page groups
         foreach($data->pages as $page) {
             if(!is_object($page)) {
                 $this->pages[] = $page;
@@ -26,22 +27,58 @@ class PageOrder implements Transformable
         return $this;
     }
 
-    public function getPage(&$idx) {
+    public function initialize($systemContext) {
         foreach($this->pages as $page) {
-            if($idx == 0) {
-                if(!is_object($page)) {
-                    return $page;
-                }
-                return $page->getPage($idx);
+            if(!is_object($page)) {
+                $this->pageObjects[] = $this->findPageData($page, $systemContext);
+                continue;
             }
-            if(is_object($page)) {
-                $res = $page->getPage($idx);
-                if($idx == 0) {
+            $this->pageObjects[] = $page->initialize($systemContext);
+        }
+        if($this->order == self::ORDER_TYPE_RANDOM){
+            shuffle($this->pageObjects);
+        }
+        return $this;
+    }
+
+    private function findPageData($filename, $systemContext) {
+        if(!$filename) {
+            return null;
+        }
+        $returnValue = null;
+        // scan the system folders for the file, prioritizing first questionnaires, then snippets
+        $mainPath = dirname(__FILE__) . '/../../resources/' . $systemContext->getFolder();
+        if(file_exists($mainPath . '/questionnaires/' . $filename)) {
+            $pageData = json_decode(file_get_contents($mainPath . '/questionnaires/' . $filename));
+            $returnValue =  new Questionnaire($pageData);
+        }
+        if(file_exists($mainPath . '/snippets/' . $filename)) {
+            $pageData = json_decode(file_get_contents($mainPath . '/snippets/' . $filename));
+            $returnValue = new Snippets($pageData);
+        }
+
+        return $returnValue;
+    }
+    
+    public function getPage($completedPages) {
+        foreach($this->pageObjects as $page) {
+            if($page instanceof PageOrder) {
+                $res = $page->getPage($completedPages);
+                if($res){
+                    // found either a qst or snip in the page order that has not been completed yet
                     return $res;
                 }
             }
-            $idx--;
+            // either no incomplete qst or snip has been found or it is not a pageOrder
+            if(!($page instanceof PageOrder)) {
+                // current page is not a page order -> check if its already completed, if it is not, return it
+                if (!in_array($page->getId(), $completedPages)) {
+                    return $page;
+                }
+            }
+            // re-loop and check all other entries
         }
+        // no incomplete page has been found
         return null;
     }
 }
