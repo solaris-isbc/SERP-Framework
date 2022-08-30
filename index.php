@@ -1,8 +1,11 @@
 <?php
 require 'vendor/autoload.php';
 
+use serpframework\frontend\ExportHandler;
 use serpframework\frontend\MainHandler;
 use serpframework\persistence\DatabaseHandler;
+use serpframework\persistence\Models\DataPoint;
+use serpframework\persistence\Models\Participant;
 
 error_reporting(-1);
 ini_set('display_errors', '1');
@@ -32,12 +35,17 @@ $f3->route('GET /dump/@store',
         $store = $f3->get('PARAMS.store');
         echo "<pre>";
         $databaseHandler = new DatabaseHandler();
-        // $databaseHandler->participantsStore->deleteStore();
-        // $databaseHandler->answerStore->deleteStore();
-        // $databaseHandler->dataPointStore->deleteStore();
-
         var_dump($databaseHandler->{$store}->findAll());
+        echo "</pre>";
+    }
+);
 
+$f3->route('GET /clearStore/@store',
+    function($f3) {
+        $store = $f3->get('PARAMS.store');
+        echo "<pre>";
+        $databaseHandler = new DatabaseHandler();
+        var_dump($databaseHandler->{$store}->deleteStore())
         echo "</pre>";
     }
 );
@@ -51,69 +59,35 @@ $f3->route('GET /clearStores',
         $databaseHandler->participantsStore->deleteStore();
         $databaseHandler->answerStore->deleteStore();
         $databaseHandler->dataPointStore->deleteStore();
+        $databaseHandler->participantDataPointStore->deleteStore();
         echo "</pre>";
     }
 );
 
-$f3->route('GET /export',
+$f3->route('GET /storeDataPoint/@key/@value',
     function($f3) {
-        echo "<pre>";
+        $value = $f3->get('PARAMS.value');
+        $key = $f3->get('PARAMS.key');
         $databaseHandler = new DatabaseHandler();
-        $databaseHandler->exportData();
-        echo "</pre>";
+        $dataPoint = new DataPoint($value, $key);
+        $participant = $databaseHandler->findParticipant('GNWJsBGspYEQCIMJKW18kmpP');
+
+        $databaseHandler->storeParticipantDataPoint($participant, $dataPoint);
     }
 );
 
-/*
-//resources/system-1/documents/s1/s1.html"
 
-$f3->route('GET /jsongenerator',
+$f3->route('GET /export/@type',
     function($f3) {
-        $mainDir = dirname(__FILE__) . '/resources/system-1/documents/';
-        $dirs = [
-            "b1",
-            "b2",
-            "b3",
-            "b4",
-            "b5",
-            "b6",
-            "b7",
-            "b8",
-            "b9",
-            "b10",
-            "s1",
-            "s2",
-            "s3",
-            "s4",
-            "s5",
-            "s6",
-            "s7",
-            "s8",
-            "s9",
-        ];
-        foreach($dirs as $md) {
-            $dir = new \DirectoryIterator($mainDir . $md);
-            foreach ($dir as $fileinfo) {
-                if (!$fileinfo->isDot()) {
-                    var_dump(strval($fileinfo));
-                    if(str_contains(strval($fileinfo), '.html')) {
-                        continue;
-                    }
-                    $filename = $md . '.html';
-                    $content = "<html><body><div style='text-align: center;'><img src='/resources/system-1/documents/" . $md . '/' . strval($fileinfo) ."'/></div></body></html>";
-                    echo "'/resources/system-1/documents/" . $md . '/' . strval($filename);
-                    file_put_contents($mainDir . $md . '/' . $filename, $content);
-                }
-            }
+        $exportHandler = new ExportHandler();
+        $type = $f3->get('PARAMS.type');
+        if($type == 'answers') {
+            $exportHandler->exportAnswers();
         }
-       
-        echo "<pre>";
-  
-        
-        echo "</pre>";
+        if($type == 'dataPoints') {
+            $exportHandler->exportUserDataPoints();
+        }
     }
 );
-*/
-
 
 $f3->run();

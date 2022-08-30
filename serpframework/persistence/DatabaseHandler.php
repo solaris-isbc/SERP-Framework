@@ -2,9 +2,11 @@
 
 namespace serpframework\persistence;
 
+use DateTime;
 use serpframework\persistence\models\Answer;
 use serpframework\persistence\models\DataPoint;
 use serpframework\persistence\models\Participant;
+use serpframework\persistence\models\UserDataPoint;
 use SleekDB\Store;
 
 class DatabaseHandler
@@ -18,11 +20,15 @@ class DatabaseHandler
     public $participantsStore;
     public $answerStore;
     public $dataPointStore;
+    public $participantDataPointStore;
 
     public function __construct()
     {
         $this->databasePath = __DIR__ . "/../../serp_database";
         $this->participantsStore = new Store("participants", $this->databasePath, [
+            "timeout" => false,
+        ]);
+        $this->participantDataPointStore = new Store("participantDataPoints", $this->databasePath, [
             "timeout" => false,
         ]);
         $this->answerStore = new Store("answers", $this->databasePath, [
@@ -58,8 +64,40 @@ class DatabaseHandler
 
     public function fetchAllParticipants()
     {
-        return $this->participantsStore->findAll();
+        return array_map(function ($data) {
+            $participant = new Participant();
+            $participant->fillFromDbRepresentation($data);
+            return $participant;
+        }, $this->participantsStore->findAll());
     }
+
+    public function fetchAllAnswers()
+    {
+        return array_map(function ($data) {
+            $answer = new Answer();
+            $answer->fillFromDbRepresentation($data);
+            return $answer;
+        }, $this->answerStore->findAll());
+    }
+
+    public function fetchAllDataPoints()
+    {
+        return array_map(function ($data) {
+            $dataPoint = new DataPoint();
+            $dataPoint->fillFromDbRepresentation($data);
+            return $dataPoint;
+        }, $this->dataPointStore->findAll());
+    }
+
+    public function fetchAllParticipantDataPoints()
+    {
+        return array_map(function ($data) {
+            $userDataPoint = new UserDataPoint();
+            $userDataPoint->fillFromDbRepresentation($data);
+            return $userDataPoint;
+        }, $this->participantDataPointStore->findAll());
+    }
+
 
     public function getSystemUserCounts()
     {
@@ -114,12 +152,10 @@ class DatabaseHandler
 
     public function getCompletedPages($participant)
     {
-        // $this->answerStore->findOneBy()
-        // TODO: fix invalid join qurey
         $answerStore = $this->answerStore;
         $dataPointsWithAnswers = $this->dataPointStore
         ->createQueryBuilder()
-        ->join(function ($dataPoint) use ($answerStore, $participant) {
+        ->join(function ($dataPoint) use ($answerStore) {
             return $answerStore->findBy(
                 ["dataPointId", "=",  $dataPoint["_id"]]
             );
@@ -138,92 +174,22 @@ class DatabaseHandler
         }
 
         return $completedPages;
+    }  
+
+    public function storeParticipantDataPoint($participant, $dataPoint)
+    {
+        if (!$dataPoint->getId()) {
+            $dataPoint = $this->storeDataPoint($dataPoint->getValue(), $dataPoint->getKey());
+        }
+        return $this->storeUserDataPoint($participant, $dataPoint);
     }
 
-
-    public function exportData()
+    private function storeUserDataPoint($participant, $dataPoint)
     {
-        // TODO: somehow make compatible so only data points get stored which are based on systems
-        // give them context as well?
-        // export main data
-        // query EVERYTHING
-        $answerStore = $this->answerStore;
-        $participantsStore = $this->participantsStore;
-        $fullData = $this->dataPointStore
-        ->createQueryBuilder()
-        ->join(function ($dataPoint) use ($answerStore, $participantsStore) {
-            // returns QueryBuilder
-            return $answerStore
-            ->createQueryBuilder()
-            ->where([ "dataPointId", "=", $dataPoint["_id"] ])
-            ->join(function ($answer) use ($participantsStore) {
-                // returns result
-                return $participantsStore->findBy(["participantId", "=", $answer["participantId"]]);
-            }, "participants");
-        }, "questionData")
-        ->getQuery()
-        ->fetch();
-
-        $outrows = [];
-        $data = [];
-        foreach($fullData as $row) {
-            $outrow = [];
-            foreach($row['questionData'] as $questionData) {
-                $outrow = [
-                    "participant" => $questionData['participantId'],
-                    "system" => base64_decode($questionData['systemId']),
-                    "created" => $row['createdAt']['date'],
-                    "question" => $row['key'],
-                    "answer" => $row['value'],
-                ];
-                $outrows[] = $outrow;
-    
-            }
-        }  
-
-     
-        $parsedOutrows = [];
-        foreach($outrows as $row) {
-            if(!isset($parsedOutrows[$row["participant"]])){
-                $parsedOutrows[$row['participant']] = [
-                    "participant" => $row["participant"],
-                    "system" => $row["system"]
-                ];
-            }
-            $key = $row['question'];
-            $parsedOutrows[$row['participant']]['answer_' . $key] = $row['answer'];
-            $parsedOutrows[$row['participant']]['time_answer_' . $key] = $row['created'];
-        }
-
-
-        // output csv
-
-        $file = "output.csv";
-        $txt = fopen($file, "w");
-        $isHeader = true;
-        foreach($parsedOutrows as $key => $value) {
-            // TODO: escape csv
-            // TODO: remove pre tags wherever they are coming from
-            if($isHeader) {
-                $line = implode(';', array_keys($value)) . PHP_EOL;
-                fwrite($txt, $line);
-                $isHeader = false;
-            }
-            $line = implode(';', $value) . PHP_EOL;
-            fwrite($txt, $line);
-        }
-
-        fclose($txt);
-
-        header('Content-Description: File Transfer');
-        header('Content-Disposition: attachment; filename='.basename($file));
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($file));
-        header("Content-Type: text/plain");
-        readfile($file);
-
+        $userDataPoint = new UserDataPoint($participant->getId(), $dataPoint->getId(), new DateTime());
+        $data = $this->participantDataPointStore->insert($userDataPoint->getDBRepresentation());
+        $userDataPoint->fillFromDbRepresentation($data);
+        return $userDataPoint;
     }
 
     private function parseAnswerType($answerType)

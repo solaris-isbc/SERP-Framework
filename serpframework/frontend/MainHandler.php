@@ -83,14 +83,14 @@ class MainHandler
         $templatePath = $this->system->getTemplatePath();
         $this->f3->set('system', $this->system);
 
-        // TODO: get this from pageOrder
         if ($pageData instanceof Snippets) {
             $this->f3->set('templatePath', $templatePath);
             $this->f3->set('snippets', $pageData);
             $this->f3->set('scope', 'serp');
 
             echo \Template::instance()->render('views/page.htm');
-        } else {
+        } 
+        elseif ($pageData instanceof Questionnaire) {
             $this->f3->set('scope', 'questionnaire');
             $this->f3->set('questionnaire', $pageData);
             echo \Template::instance()->render('views/page.htm');

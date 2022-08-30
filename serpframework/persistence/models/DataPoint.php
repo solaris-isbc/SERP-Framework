@@ -8,7 +8,7 @@ class DataPoint implements DbRepresentation
     private $createdAt;
     private $_id;
     private $key;
-    private $type;
+    private $value;
 
     public function __construct($value = null, $key = null, $createdAt = null, $_id = null)
     {
@@ -37,6 +37,18 @@ class DataPoint implements DbRepresentation
 
     public function getId() {
         return $this->_id;
+    }
+
+    public function getKey() {
+        return $this->key;
+    }
+
+    public function getValue() {
+        return $this->value;
+    } 
+
+    public function getTimestamp() {
+        return $this->createdAt;
     }
 
 }
