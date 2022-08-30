@@ -23,9 +23,7 @@ $f3->route('GET /',
 $f3->route('POST /',
     function($f3) {
         $mainHandler = new MainHandler($f3);
-
         $mainHandler->storeData();
-
         $f3->reroute('/');
     }
 );
@@ -45,7 +43,7 @@ $f3->route('GET /clearStore/@store',
         $store = $f3->get('PARAMS.store');
         echo "<pre>";
         $databaseHandler = new DatabaseHandler();
-        var_dump($databaseHandler->{$store}->deleteStore())
+        var_dump($databaseHandler->{$store}->deleteStore());
         echo "</pre>";
     }
 );

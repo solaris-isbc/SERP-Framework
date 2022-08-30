@@ -47,8 +47,10 @@ class MainHandler
     public function storeData()
     {
         $userExists = $this->handleEntry();
+
         if(!$userExists){
             $this->displayEntryPage();
+            return;
         }
         $pageType = $_POST["pagetype"] ?? "";
         $pageId = $_POST["pageId"] ?? "";
@@ -68,7 +70,12 @@ class MainHandler
 
     public function displayPage()
     {
-        $this->handleEntry();
+        $userExists = $this->handleEntry();
+
+        if(!$userExists){
+            $this->displayEntryPage();
+            return;
+        }
         $completedPageIds = $this->databaseHandler->getCompletedPages($this->participant);
         $pageData = $this->system->getPage($completedPageIds);
 
