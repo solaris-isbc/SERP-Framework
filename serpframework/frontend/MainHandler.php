@@ -89,6 +89,7 @@ class MainHandler
         }
         $templatePath = $this->system->getTemplatePath();
         $this->f3->set('system', $this->system);
+        $this->f3->set('environment', 'live');
 
         if ($pageData instanceof Snippets) {
             $this->f3->set('templatePath', $templatePath);

@@ -3,6 +3,7 @@ require 'vendor/autoload.php';
 
 use serpframework\frontend\ExportHandler;
 use serpframework\frontend\MainHandler;
+use serpframework\frontend\AdminHandler;
 use serpframework\persistence\DatabaseHandler;
 use serpframework\persistence\Models\DataPoint;
 use serpframework\persistence\Models\Participant;
@@ -10,6 +11,58 @@ use serpframework\persistence\Models\Participant;
 error_reporting(-1);
 ini_set('display_errors', '1');
 $f3 = \Base::instance();
+
+// store date for nth page and redirect to next one
+$f3->route('GET /administration',
+    function($f3) {
+        $adminHandler = new AdminHandler($f3);
+        $adminHandler->displayAdminMainPage();
+    }
+);
+
+// store date for nth page and redirect to next one
+$f3->route('POST /login',
+    function($f3) {
+        $user = $f3->get('POST.username');
+        $pass = $f3->get('POST.password');
+
+        $adminHandler = new AdminHandler($f3);
+        $success = $adminHandler->validateLogin($user, $pass);
+        if($success) {
+            $f3->reroute('/administration');
+        }else{
+            $adminHandler->displayLoginPage(true);
+        }
+    }
+);
+
+// container page for preview
+$f3->route('GET /showSystem/@system',
+    function($f3) {
+        $systemId = $f3->get('PARAMS.system');
+
+        $adminHandler = new AdminHandler($f3);
+        $adminHandler->setSystemId($systemId);
+
+        $adminHandler->displaySerpPreview();
+
+    }
+);
+
+// actual output for preview page
+$f3->route('GET /preview/@system',
+    function($f3) {
+        $systemId = $f3->get('PARAMS.system');
+
+        $adminHandler = new AdminHandler($f3);
+        $adminHandler->setSystemId($systemId);
+
+        $adminHandler->echoSystemPreview();
+
+    }
+);
+
+
 
 // display the nth page
 $f3->route('GET /',
@@ -27,6 +80,12 @@ $f3->route('POST /',
         $f3->reroute('/');
     }
 );
+
+
+
+
+
+// HELPER-ROUTES
 
 $f3->route('GET /dump/@store',
     function($f3) {

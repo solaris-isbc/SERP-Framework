@@ -29,15 +29,17 @@
     <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$snippets->getAnswerType() ,'question'=>$snippets->getQuestion() ,'id'=>$snippet->getId() ,'answers'=>$snippets->getAnswers() ,'isRequired'=>true]+get_defined_vars(),0); ?>
 
     <?php endforeach; ?>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary" name="submit">Weiter</button>
+    <?php if ($environment == 'live'): ?>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" name="submit">Weiter</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
     </form>
     </div>
     <?php endif; ?>
@@ -85,7 +87,7 @@
                 Dokument schlie&szlig;en
             </button>
         </div>
-        <iframe id="documentPreview" src="" scrolling="no" ></iframe>
+        <iframe id="documentPreview" src="" scrolling="no"></iframe>
         <div class="previewContainerFooter">
             <button class="btn btn-primary closePreviewButton">
                 Dokument schlie&szlig;en

@@ -62,6 +62,21 @@ class System {
         return $this->getMember('pageOrder')->getPage($completedPages);
     }
 
+    public function getSamplePage() {
+        // get the first serp page
+        $completedPages = [];
+        $searching = true;
+        while($searching) {
+            $page = $this->getPage($completedPages);
+            if(!$page instanceof Snippets) {
+                $completedPages[] = $page->getId();
+                continue;
+            }
+            return $page;
+        }
+        return null;
+    }
+
     public function getFolder() {
         return $this->folder;
     }

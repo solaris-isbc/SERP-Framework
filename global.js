@@ -1,3 +1,4 @@
+(function() {
 function displayDocument(event) {
     var clicked = event.target;
     let target = clicked.parentNode.getAttribute('data-document');
@@ -35,11 +36,27 @@ for (var i = 0; i < documentHideButtons.length; i++) {
     documentHideButtons[i].addEventListener('click', hideDocument);
 }
 
-// window.addEventListener('DOMContentLoaded', function(e) {
 
-//     var iFrame = document.getElementById( 'documentPreview' );
-//     this.setTimeout(function() {
-//         resizeIFrameToFitContent( iFrame );
-//         document.getElementById('documentPreview').contentWindow.scrollTo(0,0);
-//     }, 1500);
-// } );
+function showPreview(target) {
+    // create iframe
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('id', 'serpPreview');
+    iframe.onload = function(event) { 
+        resizeIFrameToFitContent(event.target);
+            event.target.width  = document.body.scrollWidth;
+            iFrame.height = iFrame.contentWindow.document.body.scrollHeight;
+        event.target.contentWindow.scrollTo(0,0);
+    }; 
+    iframe.src = target; 
+    document.getElementById('serpPreviewAnchor').after(iframe); 
+
+}
+
+
+let previewAnchor = document.getElementById('serpPreviewAnchor');
+console.log(previewAnchor);
+if(previewAnchor) {
+    let targetSystem = previewAnchor.getAttribute('data-system');
+    showPreview(targetSystem);
+}
+})();
