@@ -1,4 +1,5 @@
 <?php
+
 require 'vendor/autoload.php';
 
 use serpframework\frontend\ExportHandler;
@@ -13,73 +14,126 @@ ini_set('display_errors', '1');
 $f3 = \Base::instance();
 
 // store date for nth page and redirect to next one
-$f3->route('GET /administration',
-    function($f3) {
+$f3->route(
+    'GET /administration',
+    function ($f3) {
         $adminHandler = new AdminHandler($f3);
         $adminHandler->displayAdminMainPage();
     }
 );
 
 // store date for nth page and redirect to next one
-$f3->route('POST /login',
-    function($f3) {
+$f3->route(
+    'POST /login',
+    function ($f3) {
         $user = $f3->get('POST.username');
         $pass = $f3->get('POST.password');
 
         $adminHandler = new AdminHandler($f3);
         $success = $adminHandler->validateLogin($user, $pass);
-        if($success) {
+        if ($success) {
             $f3->reroute('/administration');
-        }else{
+        } else {
             $adminHandler->displayLoginPage(true);
         }
     }
 );
 
 // container page for preview
-$f3->route('GET /showSystem/@system',
-    function($f3) {
+$f3->route(
+    'GET /showSystem/@system',
+    function ($f3) {
         $systemId = $f3->get('PARAMS.system');
 
         $adminHandler = new AdminHandler($f3);
         $adminHandler->setSystemId($systemId);
 
         $adminHandler->displaySerpPreview();
-
     }
 );
 
 // actual output for preview page
-$f3->route('GET /preview/@system',
-    function($f3) {
+$f3->route(
+    'GET /preview/@system',
+    function ($f3) {
         $systemId = $f3->get('PARAMS.system');
 
         $adminHandler = new AdminHandler($f3);
         $adminHandler->setSystemId($systemId);
 
         $adminHandler->echoSystemPreview();
-
     }
 );
 
 
-
-// display the nth page
-$f3->route('GET /',
-    function($f3) {
+$f3->route(
+    'GET /',
+    function ($f3) {
         $mainHandler = new MainHandler($f3);
         $mainHandler->displayPage();
     }
 );
 
 // store date for nth page and redirect to next one
-$f3->route('POST /',
-    function($f3) {
+$f3->route(
+    'POST /',
+    function ($f3) {
         $mainHandler = new MainHandler($f3);
         $mainHandler->storeData();
         $f3->reroute('/');
     }
 );
+
+$f3->route(
+    'GET /export',
+    function ($f3) {
+        $adminHandler = new AdminHandler($f3);
+        $adminHandler->displayExportPage();
+    }
+);
+
+$f3->route(
+    'GET /system/@system',
+    function ($f3) {
+        $adminHandler = new AdminHandler($f3);
+        $systemId = $f3->get('PARAMS.system');
+
+        $adminHandler = new AdminHandler($f3);
+        $adminHandler->setSystemId($systemId);
+
+        $adminHandler->showSystemOptions();
+    }
+);
+
+$f3->route(
+    'GET /systemConfiguration/@system',
+    function ($f3) {
+        $adminHandler = new AdminHandler($f3);
+        $systemId = $f3->get('PARAMS.system');
+
+        $adminHandler = new AdminHandler($f3);
+        $adminHandler->setSystemId($systemId);
+
+        $adminHandler->showSystemConfiguration();
+    }
+);
+
+$f3->route(
+    'GET /export/@type',
+    function ($f3) {
+        $exportHandler = new ExportHandler();
+        $type = $f3->get('PARAMS.type');
+        if ($type == 'answers') {
+            $exportHandler->exportAnswers();
+        }
+        if ($type == 'dataPoints') {
+            $exportHandler->exportUserDataPoints();
+        }
+    }
+);
+
+
+
 
 
 
@@ -87,8 +141,9 @@ $f3->route('POST /',
 
 // HELPER-ROUTES
 
-$f3->route('GET /dump/@store',
-    function($f3) {
+$f3->route(
+    'GET /dump/@store',
+    function ($f3) {
         $store = $f3->get('PARAMS.store');
         echo "<pre>";
         $databaseHandler = new DatabaseHandler();
@@ -97,8 +152,9 @@ $f3->route('GET /dump/@store',
     }
 );
 
-$f3->route('GET /clearStore/@store',
-    function($f3) {
+$f3->route(
+    'GET /clearStore/@store',
+    function ($f3) {
         $store = $f3->get('PARAMS.store');
         echo "<pre>";
         $databaseHandler = new DatabaseHandler();
@@ -108,8 +164,9 @@ $f3->route('GET /clearStore/@store',
 );
 
 
-$f3->route('GET /clearStores',
-    function($f3) {
+$f3->route(
+    'GET /clearStores',
+    function ($f3) {
         echo "<pre>";
         echo "COMMENT IN TO NOT ACCIDENTALLY DELETE DATA";
         $databaseHandler = new DatabaseHandler();
@@ -121,8 +178,9 @@ $f3->route('GET /clearStores',
     }
 );
 
-$f3->route('GET /storeDataPoint/@key/@value',
-    function($f3) {
+$f3->route(
+    'GET /storeDataPoint/@key/@value',
+    function ($f3) {
         $value = $f3->get('PARAMS.value');
         $key = $f3->get('PARAMS.key');
         $databaseHandler = new DatabaseHandler();
@@ -134,17 +192,5 @@ $f3->route('GET /storeDataPoint/@key/@value',
 );
 
 
-$f3->route('GET /export/@type',
-    function($f3) {
-        $exportHandler = new ExportHandler();
-        $type = $f3->get('PARAMS.type');
-        if($type == 'answers') {
-            $exportHandler->exportAnswers();
-        }
-        if($type == 'dataPoints') {
-            $exportHandler->exportUserDataPoints();
-        }
-    }
-);
 
 $f3->run();

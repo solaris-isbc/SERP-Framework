@@ -9,17 +9,20 @@
 <body>
     <?php echo $this->render('views/admin/header.htm',NULL,get_defined_vars(),0); ?>
     <div class="container">
+
         <div class="row">
             <div class="col text-center">
-                <h3>Vorschau <?= ($system->getMember('name')) ?></h3>
+                <h3>Konfiguration <?= ($system->getMember('name')) ?></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+               
+                TODO: read json and display, show js and css in editors
             </div>
         </div>
     </div>
-    <div id="previewContainer">
-        <input type="hidden" id="serpPreviewAnchor" data-system="/preview/<?= ($system->getIdentifier()) ?>" />
-    </div>
-    </div>
+
 </body>
-<script src="/global.js" type="text/javascript"></script>
 
 </html>

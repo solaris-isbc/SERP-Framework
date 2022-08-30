@@ -8,6 +8,13 @@
 
 <body>
     <include href="views/admin/header.htm" />
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h3>Vorschau {{ @system->getMember('name') }}</h3>
+            </div>
+        </div>
+    </div>
     <div id="previewContainer">
         <input type="hidden" id="serpPreviewAnchor" data-system="/preview/{{ @system->getIdentifier() }}" />
     </div>

@@ -9,17 +9,22 @@
 <body>
     <?php echo $this->render('views/admin/header.htm',NULL,get_defined_vars(),0); ?>
     <div class="container">
+
         <div class="row">
             <div class="col text-center">
-                <h3>Vorschau <?= ($system->getMember('name')) ?></h3>
+                <h3>Datenexport</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="/export/answers">Hauptdaten</a></li>
+                    <li class="list-group-item"><a href="/export/dataPoints">Zusatzdaten</a></li>
+                </ul>
             </div>
         </div>
     </div>
-    <div id="previewContainer">
-        <input type="hidden" id="serpPreviewAnchor" data-system="/preview/<?= ($system->getIdentifier()) ?>" />
-    </div>
-    </div>
+
 </body>
-<script src="/global.js" type="text/javascript"></script>
 
 </html>

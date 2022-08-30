@@ -33,6 +33,44 @@ class AdminHandler
 
     }
 
+    public function showSystemOptions() {
+        if(!$this->isLoggedIn) {
+            $this->displayLoginPage();
+            return;
+        }
+ 
+        $this->f3->set('systems', $this->config->getSystems());
+        $this->f3->set('system', $this->currentSystem);
+        
+        echo \Template::instance()->render('views/admin/system.htm');
+
+    }
+
+    public function showSystemConfiguration() {
+        if(!$this->isLoggedIn) {
+            $this->displayLoginPage();
+            return;
+        }
+ 
+        $this->f3->set('systems', $this->config->getSystems());
+        $this->f3->set('system', $this->currentSystem);
+        
+        echo \Template::instance()->render('views/admin/system_configuration.htm');
+
+    }
+
+    public function displayExportPage() {
+        if(!$this->isLoggedIn) {
+            $this->displayLoginPage();
+            return;
+        }
+ 
+        $this->f3->set('systems', $this->config->getSystems());
+        
+        echo \Template::instance()->render('views/admin/export.htm');
+
+    }
+
     private function loginCheck() {
         $this->isLoggedIn = isset($_COOKIE['serp_system_admin']);
         return $this->isLoggedIn;

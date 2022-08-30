@@ -9,20 +9,21 @@
 <body>
     <?php echo $this->render('views/admin/header.htm',NULL,get_defined_vars(),0); ?>
     <div class="container">
-
         <div class="row">
-            <div class="col text-center">
-                <h3>Globale Konfiguration</h3>
+            <div class="col">
+                <h3><?= ($system->getMember('name')) ?></h3>
             </div>
         </div>
         <div class="row">
             <div class="col">
-              
-                TODO: SHOW JSON FOR GLOBAL CONFIGURATION, CSS AND JS
-                
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="/showSystem/<?= ($system->getIdentifier()) ?>">Vorschau</a></li>
+                    <li class="list-group-item"><a href="/systemConfiguration/<?= ($system->getIdentifier()) ?>">Konfiguration</a></li>
+                </ul>
             </div>
         </div>
     </div>
 </body>
+<script src="/global.js" type="text/javascript"></script>
 
 </html>
