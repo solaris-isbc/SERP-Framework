@@ -14,6 +14,7 @@ class Snippet {
         foreach(get_object_vars($data) as $key => $value) {
             $this->{$key} = $value;
         }       
+        
     }
 
     public function getProperty($name) {
@@ -25,7 +26,7 @@ class Snippet {
     }
 
     public function getCSS() {
-        return $this->css;
+        return $this->css ? preg_replace('/([^{]+{[^{]+})/', '#serp_result_' . $this->getId() . ' $1', $this->css) : null;
     }
 
     public function getId() {

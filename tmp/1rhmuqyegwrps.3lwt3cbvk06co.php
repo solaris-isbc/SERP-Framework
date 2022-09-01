@@ -20,7 +20,7 @@
                 <?php endif; ?>
 
                 <?php foreach (($snippets->getSnippets()?:[]) as $snippet): ?>
-                    <div id="serp_result" class="serp-result <?php if ($system->getMember('hasDocuments')): ?>
+                    <div id="serp_result_<?= ($snippet->getId()) ?>" class="serp_result serp-result <?php if ($system->getMember('hasDocuments')): ?>
                             hasDocuments
                         <?php endif; ?>"
                         data-id="<?= ($snippet->getId()) ?>"
@@ -29,6 +29,16 @@
     <?php endif; ?>
     >
     <?php echo $this->render($templatePath,NULL,get_defined_vars(),0); ?>
+    <pre>
+        <?= (var_dump($snippet->getCSS()))."
+" ?>
+    </pre>
+    <?php if ($snippet->getCSS() !== null): ?>
+        <style>
+                <?= ($snippet->getCss())."
+" ?>
+        </style>
+    <?php endif; ?>
     </div>
     <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$snippets->getAnswerType() ,'question'=>$snippets->getQuestion() ,'id'=>$snippet->getId() ,'answers'=>$snippets->getAnswers() ,'isRequired'=>true]+get_defined_vars(),0); ?>
 

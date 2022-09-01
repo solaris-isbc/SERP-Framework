@@ -110,7 +110,6 @@ class AdminHandler
         $this->f3->set('snippets', $samplePage);
         $this->f3->set('scope', 'serp');
         $this->f3->set('environment', 'preview');
-
         echo \Template::instance()->render('views/page.htm');
          
        

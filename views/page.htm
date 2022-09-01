@@ -20,7 +20,7 @@
                 </check>
 
                 <repeat group="{{ @snippets->getSnippets() }}" value="{{ @snippet }}">
-                    <div id="serp_result" class="serp-result <check if=" {{ @system->getMember('hasDocuments')}}">
+                    <div id="serp_result_{{ @snippet->getId() }}" class="serp_result serp-result <check if=" {{ @system->getMember('hasDocuments')}}">
                             hasDocuments
                         </check>"
                         data-id="{{ @snippet->getId() }}"
@@ -30,6 +30,11 @@
     </check>
     >
     <include href="{{ @templatePath }}" />
+    <check if="{{ @snippet->getCSS() !== null }}">
+        <style>
+                {{ @snippet->getCss() }}
+        </style>
+    </check>
     </div>
     <include href="views/questions/question.htm"
         with="$answerType={{ @snippets->getAnswerType() }},$question={{ $snippets->getQuestion() }},$id={{ $snippet->getId() }},$answers={{ $snippets->getAnswers() }},$isRequired={{ true }}" />
