@@ -72,6 +72,10 @@ class System {
         return $this->data;
     }
 
+    public function getPathWeb() {
+        return '/resources/' . $this->getFolder();
+    }
+
     public function getTemplate() {
         return file_get_contents($this->path . '/snippets/template.htm');
     }

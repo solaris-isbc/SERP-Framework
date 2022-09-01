@@ -81,6 +81,7 @@ class ExportHandler
                 $participantData[$participantId] = $keys;
                 $participantData[$participantId]['participant'] = $participantId;
                 $participantData[$participantId]['system'] = base64_decode($systemId);
+                $participantData[$participantId]['isMobile'] = $row->participant->getIsMobile() ? "1" : "0";
             }
             $key = $row->dataPoint->getKey();
             $value = $row->dataPoint->getValue();
@@ -109,15 +110,11 @@ class ExportHandler
         $txt = fopen($file, "w");
         $isHeader = true;
         foreach ($outrows as $key => $value) {
-            // TODO: escape csv
-            // TODO: remove pre tags wherever they are coming from
             if ($isHeader) {
-                $line = implode(';', array_keys($value)) . PHP_EOL;
-                fwrite($txt, $line);
+                fputcsv($txt, array_keys($value), ';');
                 $isHeader = false;
             }
-            $line = implode(';', $value) . PHP_EOL;
-            fwrite($txt, $line);
+            fputcsv($txt, $value, ';');
         }
 
         fclose($txt);

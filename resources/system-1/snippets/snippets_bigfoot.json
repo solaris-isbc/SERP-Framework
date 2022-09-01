@@ -9,7 +9,8 @@
             "url": "https://www.smithsonianmag.com/history/why-so-many-people-still-believe-in-bigfoot-180970045/",
             "shownUrl": "https://www.smithsonianmag.com ›\n                                        history › why-so-m...",
             "text": "The most recent\n                        sighting, in June 2018, was by a woman in Florida who reported a creature that looked like “a\n                        large pile of soggy grass.” Other evidence in the ...",
-            "css": ".serp_title {color: red!important;}"
+            "css": ".serp_title {color: red!important;}",
+            "img": "b1.png"
         },
         {
             "id": "b2",
@@ -76,8 +77,10 @@
         }
     ],
     "question": "How credible do you rate this snippet on a scale from 1 to 7?",
-    "answerType": "radio",
+    "answerType": "likert",
     "answers": [
         "1", "2", "3", "4", "5", "6", "7"
-    ]
+    ],
+    "minDescription": "not credible",
+    "maxDescription": "most credible"
 }

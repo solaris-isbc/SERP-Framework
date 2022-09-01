@@ -9,12 +9,14 @@ class Participant implements DbRepresentation
     private $systemId;
     private $_id;
     private $completed = false;
+    private $isMobile = false;
 
-    public function __construct($id = null, $systemId = null, $createdAt = null)
+    public function __construct($id = null, $systemId = null, $createdAt = null, $isMobile = false)
     {
         $this->id = $id;
         $this->systemId = $systemId;
         $this->createdAt = $createdAt;
+        $this->isMobile = $isMobile;
     }
 
     public function getDBRepresentation() {
@@ -24,6 +26,7 @@ class Participant implements DbRepresentation
             "systemId" => $this->systemId,
             "completed" => $this->completed,
             "createdAt" => $this->createdAt,
+            "isMobile" => $this->isMobile,
         ];
     }
 
@@ -31,6 +34,13 @@ class Participant implements DbRepresentation
         $this->completed = true;
     }
 
+    public function setIsMobile() {
+        $this->isMobile = true;
+    }
+
+    public function getIsMobile() {
+        return $this->isMobile;
+    }
     
     public function isCompleted() {
         return $this->completed;
@@ -43,6 +53,7 @@ class Participant implements DbRepresentation
         $this->systemId = $data['systemId'];
         $this->completed = $data['completed'];
         $this->createdAt = $data['createdAt'];
+        $this->createdAt = $data['isMobile'];
     }
 
     public function getId() {

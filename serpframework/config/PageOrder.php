@@ -54,7 +54,7 @@ class PageOrder implements Transformable
         }
         if(file_exists($mainPath . '/snippets/' . $filename)) {
             $pageData = json_decode(file_get_contents($mainPath . '/snippets/' . $filename));
-            $returnValue = new Snippets($pageData);
+            $returnValue = new Snippets($pageData, $systemContext);
         }
 
         return $returnValue;

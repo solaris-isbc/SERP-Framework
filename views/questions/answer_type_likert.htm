@@ -1,0 +1,37 @@
+<p>
+    {{ @question }}
+</p>
+<div>
+    <table class="table-likert">
+        <tbody>
+            <tr>
+                <td class="likert-descr-left">
+                    {{ @minDescription }}
+                </td>
+                <repeat group="{{ @answers }}" value="{{ @answer }}" counter="{{ @cnt }}">
+                    <td class="likert-label">
+                        <label for="{{ @id }}_{{ @cnt }}">
+                            {{ @answer }}
+                        </label>
+                    </td>
+                </repeat>
+                <td class="likert-descr-right">
+                    {{ @maxDescription }}
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <repeat group="{{ @answers }}" value="{{ @answer }}" counter="{{ @cnt }}">
+                    <td class="likert-answer">
+                        <input type="radio" <check if="{{ @isRequired }}">required</check> name="{{ @id }}" id="{{ @id
+                        }}_{{ @cnt }}" value="{{ @cnt }}">
+                    </td>
+                </repeat>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+I AM A LIKERT SCALE

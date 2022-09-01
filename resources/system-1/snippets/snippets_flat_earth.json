@@ -9,7 +9,8 @@
             "url": "https://physicsworld.com/a/fighting-flat-earth-theory/",
             "shownUrl": "https://physicsworld.com › fighting-flat-earth-theory",
             "text": "14 Jul 2020 — The rapper, a vocal proponent of “flat-Earth theory”, wanted to seek evidence that our planet is a disc, not a globe. His aim was to raise ...",
-            "css": ".serp_title {color: red!important;}"
+            "css": ".serp_title {color: red!important;}",
+            "img": "s1.png"
         },
         {
             "id": "s2",
@@ -69,8 +70,10 @@
         }
     ],
     "question": "How credible do you rate this snippet on a scale from 1 to 7?",
-    "answerType": "radio",
+    "answerType": "likert",
     "answers": [
         "1", "2", "3", "4", "5", "6", "7"
-    ]
+    ],
+    "minDescription": "not credible",
+    "maxDescription": "most credible"
 }

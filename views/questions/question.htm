@@ -9,4 +9,7 @@
         <check if="{{ @answerType == serpframework\config\Question::ANSWER_TYPE_RADIO }}">
                 <include href="views/questions/answer_type_radio.htm" />
         </check>
+        <check if="{{ @answerType == serpframework\config\Question::ANSWER_TYPE_LIKERT }}">
+                <include href="views/questions/answer_type_likert.htm" />
+        </check>
 </div>

@@ -42,6 +42,7 @@ class MainHandler
 
         // user might already be assigned to a system, get it
         $system = $this->getUserSystem($this->participant);
+        $this->participant->setIsMobile($detect->isMobile());
         if (!$system) {
             // assign user to system
             $system = $this->chooseSystem($this->participant);

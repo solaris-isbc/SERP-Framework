@@ -2,13 +2,11 @@
 
 namespace serpframework\config;
 
+use serpframework\traits\answerable;
+
 // holds a list of snippets and their order
 class Snippets
 {
-    public const ANSWER_TYPE_TEXT = 0;
-    public const ANSWER_TYPE_CHECKBOX = 1;
-    public const ANSWER_TYPE_RADIO = 2;
-
     private const ORDER_TYPE_FIXED = 0;
     private const ORDER_TYPE_RANDOM = 1;
 
@@ -17,16 +15,14 @@ class Snippets
     private $query;
     private $id;
 
-    private $question;
-    private $answerType;
-    private $answers;
+    use answerable;
 
-    public function __construct($data){
+    public function __construct($data, $context){
         $this->order = strtolower($data->order) == "random" ? self::ORDER_TYPE_RANDOM : self::ORDER_TYPE_FIXED;
         $this->query = $data->query;
 
         foreach($data->snippets as $snippetRaw) {
-            $snippet = new Snippet($snippetRaw);
+            $snippet = new Snippet($snippetRaw, $context);
             $this->snippets[] = $snippet;
         }
         if($this->order == self::ORDER_TYPE_RANDOM){
@@ -37,6 +33,13 @@ class Snippets
         $this->id = $data->id;
         $this->answerType = $this->parseAnswerType($data->answerType);
        
+        if(isset($data->minDescription)) {
+            $this->setMinDescription($data->minDescription);
+        }
+        if(isset($data->maxDescription)) {
+            $this->setMaxDescription($data->maxDescription);
+        }
+
         if(isset($data->answers) && is_array($data->answers)) {
             $this->answers = [];
             foreach($data->answers as $answer) {
@@ -54,33 +57,8 @@ class Snippets
         return $this->query;
     }
 
-    public function getQuestion() {
-        return $this->question;
-    }
-
-    public function getAnswerType() {
-        return $this->answerType;
-    }
-
-    public function getAnswers() {
-        return $this->answers ?? [];
-    }
-
     public function getId() {
         return $this->id;
     }
 
-    private function parseAnswerType($answerType) {
-        $type = strtolower($answerType);
-        switch($type) {
-            case 'radio':
-                return self::ANSWER_TYPE_RADIO;
-            case 'checkbox': 
-                return self::ANSWER_TYPE_CHECKBOX;
-            case 'text':
-            default:
-                // default to text
-                return self::ANSWER_TYPE_TEXT;
-        }
-    }
 }

@@ -29,10 +29,6 @@
     <?php endif; ?>
     >
     <?php echo $this->render($templatePath,NULL,get_defined_vars(),0); ?>
-    <pre>
-        <?= (var_dump($snippet->getCSS()))."
-" ?>
-    </pre>
     <?php if ($snippet->getCSS() !== null): ?>
         <style>
                 <?= ($snippet->getCss())."
@@ -40,7 +36,7 @@
         </style>
     <?php endif; ?>
     </div>
-    <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$snippets->getAnswerType() ,'question'=>$snippets->getQuestion() ,'id'=>$snippet->getId() ,'answers'=>$snippets->getAnswers() ,'isRequired'=>true]+get_defined_vars(),0); ?>
+    <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$snippets->getAnswerType() ,'question'=>$snippets->getQuestion() ,'id'=>$snippet->getId() ,'answers'=>$snippets->getAnswers() ,'isRequired'=>true,'minDescription'=>$snippets->getMinDescription() ,'maxDescription'=>$snippets->getMaxDescription()]+get_defined_vars(),0); ?>
 
     <?php endforeach; ?>
     <?php if ($environment == 'live'): ?>
@@ -83,7 +79,7 @@
                 <?php foreach (($questionnaire->getQuestions()?:[]) as $question): ?>
                     <div class="row">
                         <div class="col">
-                            <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$question->getAnswerType() ,'question'=>$question->getQuestion() ,'id'=>$question->getId() ,'answers'=>$question->getAnswers() ,'isRequired'=>$question->isRequired()]+get_defined_vars(),0); ?>
+                            <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$question->getAnswerType() ,'question'=>$question->getQuestion() ,'id'=>$question->getId() ,'answers'=>$question->getAnswers() ,'isRequired'=>$question->isRequired() ,'minDescription'=>$question->getMinDescription() ,'maxDescription'=>$question->getMaxDescription()]+get_defined_vars(),0); ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
