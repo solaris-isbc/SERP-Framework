@@ -67,4 +67,11 @@ class Snippets
         return $this->id;
     }
 
+    public function getTaskDescription() {
+        return $this->taskDescription;
+    }
+
+    public function getTaskLabel() {
+        return $this->taskLabel;
+    }
 }

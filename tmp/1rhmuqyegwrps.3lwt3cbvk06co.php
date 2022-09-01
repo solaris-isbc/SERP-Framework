@@ -9,6 +9,18 @@
 <body>
 
     <?php if ($scope=='serp'): ?>
+        <?php if ($snippets->getTaskDescription() != '' || $snippets->getTaskLabel() != ''): ?>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-4 p-5 bg-secondary text-white rounded">
+                            <h1><?= ($snippets->getTaskLabel()) ?></h1>
+                            <p><?= ($snippets->getTaskDescription()) ?></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
         <div id="serp_preview">
 
             <?php echo $this->render('views/serp_header.htm',NULL,get_defined_vars(),0); ?>
@@ -21,9 +33,9 @@
 
                 <?php foreach (($snippets->getSnippets()?:[]) as $snippet): ?>
                     <div id="serp_result_<?= ($snippet->getId()) ?>" class="serp_result serp-result <?php if ($system->getMember('hasDocuments')): ?>
-                            hasDocuments
-                        <?php endif; ?>"
-                        data-id="<?= ($snippet->getId()) ?>"
+                        hasDocuments
+    <?php endif; ?>"
+    data-id="<?= ($snippet->getId()) ?>"
     <?php if ($system->getMember('hasDocuments')): ?>
         data-document="/resources/<?= ($system->getFolder()) ?>/documents/<?= ($snippet->getId()) ?>/<?= ($snippet->getId()) ?>.html"
     <?php endif; ?>
@@ -31,8 +43,11 @@
     <?php echo $this->render($templatePath,NULL,get_defined_vars(),0); ?>
     <?php if ($snippet->getCSS() !== null): ?>
         <style>
-                <?= ($snippet->getCss())."
-" ?>
+            {
+                    {
+                    @snippet->getCss()
+                }
+            }
         </style>
     <?php endif; ?>
     </div>

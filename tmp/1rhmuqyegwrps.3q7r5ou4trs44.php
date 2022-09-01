@@ -36,5 +36,3 @@
     </table>
 
 </div>
-
-I AM A LIKERT SCALE

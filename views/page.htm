@@ -9,6 +9,18 @@
 <body>
 
     <check if="{{ @scope=='serp' }}">
+        <check if="{{ @snippets->getTaskDescription() != '' || @snippets->getTaskLabel() != '' }}">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-4 p-5 bg-secondary text-white rounded">
+                            <h1>{{ @snippets->getTaskLabel() }}</h1>
+                            <p>{{ @snippets->getTaskDescription() }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </check>
         <div id="serp_preview">
 
             <include href="views/serp_header.htm" />
@@ -20,10 +32,11 @@
                 </check>
 
                 <repeat group="{{ @snippets->getSnippets() }}" value="{{ @snippet }}">
-                    <div id="serp_result_{{ @snippet->getId() }}" class="serp_result serp-result <check if=" {{ @system->getMember('hasDocuments')}}">
-                            hasDocuments
-                        </check>"
-                        data-id="{{ @snippet->getId() }}"
+                    <div id="serp_result_{{ @snippet->getId() }}" class="serp_result serp-result <check if=" {{
+                        @system->getMember('hasDocuments')}}">
+                        hasDocuments
+    </check>"
+    data-id="{{ @snippet->getId() }}"
     <check if="{{ @system->getMember('hasDocuments') }}">
         data-document="/resources/{{ @system->getFolder() }}/documents/{{ @snippet->getId()}}/{{
         @snippet->getId()}}.html"
@@ -32,7 +45,11 @@
     <include href="{{ @templatePath }}" />
     <check if="{{ @snippet->getCSS() !== null }}">
         <style>
-                {{ @snippet->getCss() }}
+            {
+                    {
+                    @snippet->getCss()
+                }
+            }
         </style>
     </check>
     </div>
