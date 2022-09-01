@@ -2,7 +2,7 @@
     <?= ($question)."
 " ?>
 </h6>
-<div>
+<div class="mb-3">
     <table class="table-likert">
         <tbody>
             <tr>
