@@ -31,3 +31,11 @@
 .previewContainerFooter {
     text-align: center;
 }
+
+td.likert-label {
+    padding: 10px 15px;
+}
+
+td.likert-answer {
+    padding: 0px 15px;
+}

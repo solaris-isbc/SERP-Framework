@@ -37,7 +37,6 @@
     <?php endif; ?>
     </div>
     <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$snippets->getAnswerType() ,'question'=>$snippets->getQuestion() ,'id'=>$snippet->getId() ,'answers'=>$snippets->getAnswers() ,'isRequired'=>true,'minDescription'=>$snippets->getMinDescription() ,'maxDescription'=>$snippets->getMaxDescription()]+get_defined_vars(),0); ?>
-
     <?php endforeach; ?>
     <?php if ($environment == 'live'): ?>
         <div class="container">

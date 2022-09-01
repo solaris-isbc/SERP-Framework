@@ -1,5 +1,7 @@
 {
     "id": "q_fe",
+    "taskLabel": "Task",
+    "taskDescription": "Please rate the following snippets according to their credibility.",
     "order": "random",
     "query": "is the earth flat?",
     "snippets": [

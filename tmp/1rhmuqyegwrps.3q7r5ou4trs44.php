@@ -1,25 +1,24 @@
-<p>
+<h6>
     <?= ($question)."
 " ?>
-</p>
+</h6>
 <div>
-    <table>
+    <table class="table-likert">
         <tbody>
             <tr>
-                <td>
+                <td class="likert-descr-left">
                     <?= ($minDescription)."
 " ?>
                 </td>
                 <?php $cnt=0; foreach (($answers?:[]) as $answer): $cnt++; ?>
-
-                    <td>
+                    <td class="likert-label">
                         <label for="<?= ($id) ?>_<?= ($cnt) ?>">
                             <?= ($answer)."
 " ?>
                         </label>
                     </td>
                 <?php endforeach; ?>
-                <td>
+                <td class="likert-descr-right">
                     <?= ($maxDescription)."
 " ?>
                 </td>
@@ -27,7 +26,7 @@
             <tr>
                 <td></td>
                 <?php $cnt=0; foreach (($answers?:[]) as $answer): $cnt++; ?>
-                    <td>
+                    <td class="likert-answer">
                         <input type="radio" <?php if ($isRequired): ?>required<?php endif; ?> name="<?= ($id) ?>" id="<?= ($id) ?>_<?= ($cnt) ?>" value="<?= ($cnt) ?>">
                     </td>
                 <?php endforeach; ?>

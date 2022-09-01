@@ -38,7 +38,6 @@
     </div>
     <include href="views/questions/question.htm"
         with="$answerType={{ @snippets->getAnswerType() }},$question={{ $snippets->getQuestion() }},$id={{ $snippet->getId() }},$answers={{ $snippets->getAnswers() }},$isRequired={{ true }},$minDescription={{ $snippets->getMinDescription() }},$maxDescription={{ $snippets->getMaxDescription() }}" />
-
     </repeat>
     <check if="{{ @environment == 'live' }}">
         <div class="container">

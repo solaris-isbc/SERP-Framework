@@ -15,6 +15,9 @@ class Snippets
     private $query;
     private $id;
 
+    private $taskDescription;
+    private $taskLabel;
+
     use answerable;
 
     public function __construct($data, $context){
@@ -40,6 +43,9 @@ class Snippets
             $this->setMaxDescription($data->maxDescription);
         }
 
+        $this->taskDescription = $data->taskDescription ?? '';
+        $this->taskLabel = $data->taskLabel ?? '';
+        
         if(isset($data->answers) && is_array($data->answers)) {
             $this->answers = [];
             foreach($data->answers as $answer) {
