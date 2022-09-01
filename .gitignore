@@ -1,0 +1,5 @@
+tmp/**
+serp_database/**
+answers.csv
+dataPoints.csv
+output.csv

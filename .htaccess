@@ -1,3 +1,35 @@
+# disallow access on json files
+<Files "*.json">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# disallow access on templates
+<Files "*.htm">
+    Order Deny,Allow
+    Deny from all
+</Files>
+#disallow access on generated CSV-Files
+<Files "*.csv">
+    Order Deny,Allow
+    Deny from all
+</Files>
+# disallow access to src
+<Files "serpframework/*">
+    Order Deny,Allow
+    Deny from all
+</Files>
+# disallow access to cache
+<Files "tmp/*">
+    Order Deny,Allow
+    Deny from all
+</Files>
+# disallow access to db
+<Files "serp_database/*">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
 RewriteEngine On
 
 RewriteRule ^(app|dict|ns|tmp)\/|\.ini$ - [R=404]
