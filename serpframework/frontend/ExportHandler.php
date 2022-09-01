@@ -42,7 +42,7 @@ class ExportHandler
         foreach($this->userDataPoints as $userDataPoint) {
             $outrows[] = [
                 'participant' => $userDataPoint->participant->getId(),
-                'system' => $userDataPoint->participant->getSystemId(),
+                'system' => base64_decode($userDataPoint->participant->getSystemId()),
                 'key' => $userDataPoint->dataPoint->getKey(),
                 'value' => $userDataPoint->dataPoint->getValue(),
             ];

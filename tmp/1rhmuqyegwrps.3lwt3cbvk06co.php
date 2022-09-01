@@ -15,11 +15,13 @@
             <form method="POST">
                 <input type="hidden" name="pagetype" value="SERP" />
                 <input type="hidden" name="pageId" value="<?= ($snippets->getId()) ?>" />
+                <input id="participantId" type="hidden" name="participant" value="<?= ($participant->getId()) ?>" />
 
                 <?php foreach (($snippets->getSnippets()?:[]) as $snippet): ?>
-                    <div id="serp_result" class="serp-result <?php if ($system->getMember('hasDocuments')): ?>hasDocuments
-    <?php endif; ?>"
-    data-id="<?= ($snippet->getId()) ?>"
+                    <div id="serp_result" class="serp-result <?php if ($system->getMember('hasDocuments')): ?>
+                            hasDocuments
+                        <?php endif; ?>"
+                        data-id="<?= ($snippet->getId()) ?>"
     <?php if ($system->getMember('hasDocuments')): ?>
         data-document="/resources/<?= ($system->getFolder()) ?>/documents/<?= ($snippet->getId()) ?>/<?= ($snippet->getId()) ?>.html"
     <?php endif; ?>
@@ -47,6 +49,7 @@
         <div class="container">
             <form method="POST">
                 <input type="hidden" name="pagetype" value="QUESTIONNAIRE" />
+                <input id="participantId" type="hidden" name="participant" value="<?= ($participant->getId()) ?>" />
                 <input type="hidden" name="pageId" value="<?= ($questionnaire->getId()) ?>" />
 
                 <?php if ($questionnaire->getName() != null): ?>
@@ -66,7 +69,6 @@
                 <?php foreach (($questionnaire->getQuestions()?:[]) as $question): ?>
                     <div class="row">
                         <div class="col">
-
                             <?php echo $this->render('views/questions/question.htm',NULL,['answerType'=>$question->getAnswerType() ,'question'=>$question->getQuestion() ,'id'=>$question->getId() ,'answers'=>$question->getAnswers() ,'isRequired'=>$question->isRequired()]+get_defined_vars(),0); ?>
                         </div>
                     </div>

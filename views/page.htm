@@ -15,12 +15,13 @@
             <form method="POST">
                 <input type="hidden" name="pagetype" value="SERP" />
                 <input type="hidden" name="pageId" value="{{ @snippets->getId() }}" />
+                <input id="participantId" type="hidden" name="participant" value="{{ @participant->getId() }}" />
 
                 <repeat group="{{ @snippets->getSnippets() }}" value="{{ @snippet }}">
-                    <div id="serp_result" class="serp-result <check if=" {{ @system->getMember('hasDocuments')
-                        }}">hasDocuments
-    </check>"
-    data-id="{{ @snippet->getId() }}"
+                    <div id="serp_result" class="serp-result <check if=" {{ @system->getMember('hasDocuments')}}">
+                            hasDocuments
+                        </check>"
+                        data-id="{{ @snippet->getId() }}"
     <check if="{{ @system->getMember('hasDocuments') }}">
         data-document="/resources/{{ @system->getFolder() }}/documents/{{ @snippet->getId()}}/{{
         @snippet->getId()}}.html"
@@ -50,6 +51,7 @@
         <div class="container">
             <form method="POST">
                 <input type="hidden" name="pagetype" value="QUESTIONNAIRE" />
+                <input id="participantId" type="hidden" name="participant" value="{{ @participant->getId() }}" />
                 <input type="hidden" name="pageId" value="{{ @questionnaire->getId() }}" />
 
                 <check if="{{ @questionnaire->getName() != null }}">
@@ -69,7 +71,6 @@
                 <repeat group="{{ @questionnaire->getQuestions() }}" value="{{ @question }}">
                     <div class="row">
                         <div class="col">
-
                             <include href="views/questions/question.htm"
                                 with="$answerType={{ @question->getAnswerType() }},$question={{ $question->getQuestion() }},$id={{ $question->getId() }},$answers={{ $question->getAnswers() }},$isRequired={{ $question->isRequired() }}" />
                         </div>

@@ -65,7 +65,7 @@ $f3->route(
     }
 );
 
-
+// main participant view
 $f3->route(
     'GET /',
     function ($f3) {
@@ -84,6 +84,7 @@ $f3->route(
     }
 );
 
+// admin page for export
 $f3->route(
     'GET /export',
     function ($f3) {
@@ -92,6 +93,7 @@ $f3->route(
     }
 );
 
+// configuration overview page for system 
 $f3->route(
     'GET /system/@system',
     function ($f3) {
@@ -105,6 +107,7 @@ $f3->route(
     }
 );
 
+// configuration overview page for system 
 $f3->route(
     'GET /systemConfiguration/@system',
     function ($f3) {
@@ -118,6 +121,7 @@ $f3->route(
     }
 );
 
+// file export page
 $f3->route(
     'GET /export/@type',
     function ($f3) {
@@ -132,9 +136,19 @@ $f3->route(
     }
 );
 
-
-
-
+// store a single data point
+$f3->route(
+    'GET /storeDataPoint/@participant/@key/@value',
+    function ($f3) {
+        $value = $f3->get('PARAMS.value');
+        $key = $f3->get('PARAMS.key');
+        $participant = $f3->get('PARAMS.participant');
+        $databaseHandler = new DatabaseHandler();
+        $dataPoint = new DataPoint($value, $key);
+        $participant = $databaseHandler->findParticipant($participant);
+        $databaseHandler->storeParticipantDataPoint($participant, $dataPoint);
+    }
+);
 
 
 
@@ -175,19 +189,6 @@ $f3->route(
         $databaseHandler->dataPointStore->deleteStore();
         $databaseHandler->participantDataPointStore->deleteStore();
         echo "</pre>";
-    }
-);
-
-$f3->route(
-    'GET /storeDataPoint/@key/@value',
-    function ($f3) {
-        $value = $f3->get('PARAMS.value');
-        $key = $f3->get('PARAMS.key');
-        $databaseHandler = new DatabaseHandler();
-        $dataPoint = new DataPoint($value, $key);
-        $participant = $databaseHandler->findParticipant('GNWJsBGspYEQCIMJKW18kmpP');
-
-        $databaseHandler->storeParticipantDataPoint($participant, $dataPoint);
     }
 );
 

@@ -21,7 +21,6 @@
                             <?php foreach (($systems?:[]) as $system): ?>
                                 <li><a class="dropdown-item"
                                         href="/system/<?= ($system->getIdentifier()) ?>"><?= ($system->getMember('name')) ?></a></li>
-
                             <?php endforeach; ?>
                         </ul>
                     </li>
