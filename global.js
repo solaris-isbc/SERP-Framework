@@ -64,7 +64,14 @@ function storeDataPoint(key, value) {
 
 function beautifyTextarea(textarea) {
     var text = textarea.value;
-    textarea.value = js_beautify(text, { indent_size: 2 });
+    let type = textarea.getAttribute('data-mode') ?? 'application/ld+json';
+    if(type == 'application/ld+json') {
+        textarea.value = js_beautify(text, { indent_size: 2 });
+    } if(type == 'text/css') {
+        textarea.value = css_beautify(text, { indent_size: 2 }); 
+    }else if(type == 'text/html') {
+        textarea.value = html_beautify(text, { indent_size: 2 });
+    }
 }
 
 function initializeCodemirror(textarea) {
@@ -104,7 +111,6 @@ function initializeCodemirror(textarea) {
         beautifyTextarea(textarea);
         initializeCodemirror(textarea);
     }
-
 })();
 
 

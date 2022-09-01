@@ -53,12 +53,19 @@ class AdminHandler
             $this->displayLoginPage();
             return;
         }
- 
         $this->f3->set('systems', $this->config->getSystems());
         $this->f3->set('system', $this->currentSystem);
         
         echo \Template::instance()->render('views/admin/system_configuration.htm');
 
+    }
+
+    public function storeSystemConfiguration($jsonConfig, $templateConfig, $cssConfig) {
+        $this->currentSystem->update(json_decode($jsonConfig), true);
+        $this->currentSystem->updateTemplate($templateConfig);
+        $this->currentSystem->updateCss($cssConfig);
+        // id might have changed
+        $this->f3->reroute('/systemConfiguration/' . $this->currentSystem->getIdentifier());
     }
 
     public function displayExportPage() {

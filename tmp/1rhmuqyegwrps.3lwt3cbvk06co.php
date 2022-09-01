@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="/bootstrap.min.css" />
     <link rel="stylesheet" href="/global.css" />
-    <link rel="stylesheet" href="/resources/<?= ($system->getFolder()) ?>/global.css" />
+    <link rel="stylesheet" href="<?= ($system->getCssPathWeb()) ?>" />
 </head>
 
 <body>
@@ -15,7 +15,9 @@
             <form method="POST">
                 <input type="hidden" name="pagetype" value="SERP" />
                 <input type="hidden" name="pageId" value="<?= ($snippets->getId()) ?>" />
-                <input id="participantId" type="hidden" name="participant" value="<?= ($participant->getId()) ?>" />
+                <?php if ($environment == 'live'): ?>
+                    <input id="participantId" type="hidden" name="participant" value="<?= ($participant->getId()) ?>" />
+                <?php endif; ?>
 
                 <?php foreach (($snippets->getSnippets()?:[]) as $snippet): ?>
                     <div id="serp_result" class="serp-result <?php if ($system->getMember('hasDocuments')): ?>
@@ -49,7 +51,9 @@
         <div class="container">
             <form method="POST">
                 <input type="hidden" name="pagetype" value="QUESTIONNAIRE" />
-                <input id="participantId" type="hidden" name="participant" value="<?= ($participant->getId()) ?>" />
+                <?php if ($environment == 'live'): ?>
+                    <input id="participantId" type="hidden" name="participant" value="<?= ($participant->getId()) ?>" />
+                <?php endif; ?>
                 <input type="hidden" name="pageId" value="<?= ($questionnaire->getId()) ?>" />
 
                 <?php if ($questionnaire->getName() != null): ?>

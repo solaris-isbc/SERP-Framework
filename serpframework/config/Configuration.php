@@ -90,8 +90,7 @@ class Configuration {
         }
         $jsonStr .= '}';
         file_put_contents($this->configPath, $jsonStr);
-        // re-read the config files
+        // re-read the config file
         $this->parseConfig();
-        $this->loadSystems();
     }
 }

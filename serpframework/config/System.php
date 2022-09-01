@@ -8,15 +8,27 @@ class System {
     private const VAR_TYPE_ARRAY = 2;
     private const VAR_TYPE_OBJECT = 2;
 
+    private $data;
     private $members = [];
 
     private $folder;
-
+    private $path;
+    private $configFilePath;
     public function __construct($path, $filename)
     {
         $data = json_decode(file_get_contents($path . '/' .$filename));
-        
+        $this->data = $data;
+        $this->path = $path;
+        $this->configFilePath = $path . '/' .$filename;
+
         $this->folder = basename($path);
+
+       $this->update($data);
+    }
+
+    public function update($data, $writeConfig = false) {
+        //unregister any members or fields
+        $this->members = [];
 
         // first we register all relevant members from the json file
         $this->registerMember('name', $data->name, self::VAR_TYPE_PRIMITIVE);
@@ -33,6 +45,16 @@ class System {
         // special case: pageOrder -> we need the context of the system to load further json files
         // -> pass system for context purpose
         $this->members['pageOrder']->value->initialize($this);
+        file_put_contents($this->configFilePath, json_encode($data));
+
+    }
+
+    public function updateTemplate($template) {
+        file_put_contents($this->path . '/snippets/template.htm', $template);
+    }
+
+    public function updateCss($css) {
+        file_put_contents($this->path . '/system.css', $css);
     }
 
     private function registerMember($name, $value, $type) {
@@ -40,6 +62,27 @@ class System {
         $member->type = $type;
         $member->value = $value;
         $this->members[$name] = $member;    
+    }
+
+    public function getConfigFilePath() {
+        return $this->configFilePath;
+    }
+
+    public function getRawData() {
+        return $this->data;
+    }
+
+    public function getTemplate() {
+        return file_get_contents($this->path . '/snippets/template.htm');
+    }
+
+
+    public function getCss() {
+        return file_get_contents($this->path . '/system.css');
+    }
+
+    public function getCssPathWeb() {
+        return '/resources/' . $this->getFolder() . '/system.css';
     }
 
     public function getMember($name) {

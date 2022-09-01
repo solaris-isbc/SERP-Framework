@@ -133,6 +133,25 @@ $f3->route(
     }
 );
 
+// configuration overview page for system 
+$f3->route(
+    'POST /systemConfiguration/@system',
+    function ($f3) {
+        $adminHandler = new AdminHandler($f3);
+        $systemId = $f3->get('PARAMS.system');
+       
+        $jsonConfig = $f3->get('POST.jsonConfig');
+        $templateConfig = $f3->get('POST.templateConfig');
+        $cssConfig = $f3->get('POST.cssConfig');
+        
+        $adminHandler = new AdminHandler($f3);
+        $adminHandler->setSystemId($systemId);
+        $adminHandler->storeSystemConfiguration($jsonConfig, $templateConfig, $cssConfig);
+
+        $adminHandler->showSystemConfiguration();
+    }
+);
+
 // file export page
 $f3->route(
     'GET /export/@type',
