@@ -28,7 +28,8 @@ $f3->route(
     function ($f3) {
         $adminHandler = new AdminHandler($f3);
         $sections = $f3->get('POST.sections');
-        $adminHandler->storeMainConfiguration($sections);
+        $header = $f3->get('POST.header');
+        $adminHandler->storeMainConfiguration($sections, $header);
         $adminHandler->displayAdminMainPage();
     }
 );

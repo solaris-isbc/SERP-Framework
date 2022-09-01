@@ -20,25 +20,41 @@
     <?php echo $this->render('views/admin/header.htm',NULL,get_defined_vars(),0); ?>
     <div class="container">
 
-        <div class="row">
+        <div class="row mt-3">
             <div class="col text-center">
                 <h3>Globale Konfiguration</h3>
             </div>
         </div>
         <form method="POST" action="/administration">
             <?php foreach (($config->getSections()?:[]) as $sectionName=>$section): ?>
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col">
                         <h4><?= ($sectionName) ?></h4>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-3">
                     <div class="col">
                         <textarea id="cm_<?= ($sectionName) ?>" name="sections[<?= ($sectionName) ?>]"
                             class="codemirror"><?= (json_encode($section)) ?></textarea>
                     </div>
                 </div>
             <?php endforeach; ?>
+            <div class="row mt-3">
+                <div class="col">
+                    <h4>SERP-Header</h4>
+                    <div class="alert alert-info">
+                        <?php $bleft='{'; ?>
+                        <?php $bright='}'; ?>
+                        Die aktulle Query für die SERP kann über die Variable <?= ($bleft) ?><?= ($bleft) ?> @snippets->getQuery() <?= ($bright) ?><?= ($bright) ?>  eingebunden werden.
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <textarea id="cm_header" name="header" data-mode="text/html"
+                                class="codemirror"><?= ($header) ?></textarea>
+                </div>
+            </div>
             <div class="row">
                 <div class="col">
                    <button type="submit" class="btn btn-primary">Speichern</button>

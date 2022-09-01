@@ -10,7 +10,7 @@ class AdminHandler
     public $config;
     private $f3;
     private $databaseHandler;
-
+    private $basepath;
     private $isLoggedIn = false;
 
     public function __construct($f3)
@@ -18,6 +18,7 @@ class AdminHandler
         $this->config = new Configuration(dirname(__FILE__) . '/../../resources/config.json');
         $this->f3 = $f3;
         $this->databaseHandler = new DatabaseHandler();
+        $this->basepath = dirname(__FILE__) . '/../../';
         $this->loginCheck();
     }
 
@@ -27,9 +28,12 @@ class AdminHandler
             return;
         }
  
+        $header = file_get_contents($this->basepath . 'views/serp_header.htm');
+
         $this->f3->set('systems', $this->config->getSystems());
         
         $this->f3->set('config', $this->config);
+        $this->f3->set('header', $header);
 
         echo \Template::instance()->render('views/admin/index.htm');
 
@@ -128,10 +132,11 @@ class AdminHandler
         echo \Template::instance()->render('views/admin/login.htm');
     }
 
-    public function storeMainConfiguration($sections) {
+    public function storeMainConfiguration($sections, $header) {
         foreach($sections as $name => $section) {
             $this->config->updateSection($name, json_decode($section));
         }
+        file_put_contents($this->basepath . 'views/serp_header.htm', $header);
         $this->config->persist();
     }
 }
