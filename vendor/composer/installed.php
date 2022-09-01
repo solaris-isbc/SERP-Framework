@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '72a0c75acec1a316ddf4570fdc640e2d5a94ac7f',
+        'reference' => 'd5ff75bd35fc2eae0800b51a9956dbae4b07d05e',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '72a0c75acec1a316ddf4570fdc640e2d5a94ac7f',
+            'reference' => 'd5ff75bd35fc2eae0800b51a9956dbae4b07d05e',
             'dev_requirement' => false,
         ),
         'bcosca/fatfree-core' => array(
@@ -26,6 +26,15 @@
             'install_path' => __DIR__ . '/../bcosca/fatfree-core',
             'aliases' => array(),
             'reference' => 'cdd878db018280369b643fce62f70e55044f9ac4',
+            'dev_requirement' => false,
+        ),
+        'mobiledetect/mobiledetectlib' => array(
+            'pretty_version' => '2.8.39',
+            'version' => '2.8.39.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mobiledetect/mobiledetectlib',
+            'aliases' => array(),
+            'reference' => '0fd6753003fc870f6e229bae869cc1337c99bc45',
             'dev_requirement' => false,
         ),
         'rakibtg/sleekdb' => array(

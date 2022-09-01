@@ -32,6 +32,7 @@ return array(
     'Magic' => $vendorDir . '/bcosca/fatfree-core/magic.php',
     'Markdown' => $vendorDir . '/bcosca/fatfree-core/markdown.php',
     'Matrix' => $vendorDir . '/bcosca/fatfree-core/matrix.php',
+    'Mobile_Detect' => $vendorDir . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
     'Prefab' => $vendorDir . '/bcosca/fatfree-core/base.php',
     'Preview' => $vendorDir . '/bcosca/fatfree-core/base.php',
     'Registry' => $vendorDir . '/bcosca/fatfree-core/base.php',

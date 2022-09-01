@@ -87,6 +87,15 @@ $f3->route(
     }
 );
 
+// main participant view
+$f3->route(
+    'GET /forbidden',
+    function ($f3) {
+        $mainHandler = new MainHandler($f3);
+        $mainHandler->displayForbiddenPage();
+    }
+);
+
 // store date for nth page and redirect to next one
 $f3->route(
     'POST /',

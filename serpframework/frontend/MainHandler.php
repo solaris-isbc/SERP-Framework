@@ -8,7 +8,7 @@ use serpframework\config\Snippets;
 use serpframework\config\Questionnaire;
 use serpframework\persistence\DatabaseHandler;
 use serpframework\persistence\models\Participant;
-
+use Mobile_Detect;
 class MainHandler
 {
     public $config;
@@ -28,6 +28,15 @@ class MainHandler
 
     private function handleEntry()
     {
+        // first check if desktop/mobile allowed/forbidden
+        $detect = new Mobile_Detect();
+ 
+        // Any mobile device (phones or tablets).
+        if (($this->config->getSetting('access', 'denyMobile') && $detect->isMobile()) || ($this->config->getSetting('access', 'denyDesktop') && !$detect->isMobile())) {
+            $this->f3->reroute('/forbidden'); 
+        }
+
+
         // cookie user for IDing
         $userExists = $this->identifyUser();
 
@@ -42,6 +51,11 @@ class MainHandler
         $this->system = $system;
 
         return $userExists;
+    }
+
+    public function displayForbiddenPage() {
+        echo \Template::instance()->render('views/forbidden.htm');
+        return;
     }
 
     public function storeData()

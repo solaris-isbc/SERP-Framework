@@ -20,6 +20,16 @@ class ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Audit' => __DIR__ . '/..' . '/bcosca/fatfree-core/audit.php',
         'Auth' => __DIR__ . '/..' . '/bcosca/fatfree-core/auth.php',
@@ -47,6 +57,7 @@ class ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b
         'Magic' => __DIR__ . '/..' . '/bcosca/fatfree-core/magic.php',
         'Markdown' => __DIR__ . '/..' . '/bcosca/fatfree-core/markdown.php',
         'Matrix' => __DIR__ . '/..' . '/bcosca/fatfree-core/matrix.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Prefab' => __DIR__ . '/..' . '/bcosca/fatfree-core/base.php',
         'Preview' => __DIR__ . '/..' . '/bcosca/fatfree-core/base.php',
         'Registry' => __DIR__ . '/..' . '/bcosca/fatfree-core/base.php',
@@ -70,6 +81,7 @@ class ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitb86eba39b1e235e602f2b03a037ba39b::$classMap;
 
         }, null, ClassLoader::class);

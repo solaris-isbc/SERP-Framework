@@ -1,2 +1,2 @@
-<h1>Finished</h1>
-<p>The experiment is now finished. Thank you for your participation!</p>
+<h1>Ende</h1>
+<p>Das Experiment ist nun beendet. Vielen Dank für deine Teilnahme!</p>

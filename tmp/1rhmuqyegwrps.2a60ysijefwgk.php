@@ -54,7 +54,7 @@
         </div>
         <div class="row mt-3">
             <div class="col">
-                <textarea id="cm_css_<?= ($system->getMember('name')) ?>" name="templateConfig" data-mode="text/html"
+                <textarea id="cm_template_<?= ($system->getMember('name')) ?>" name="templateConfig" data-mode="text/html"
                             class="codemirror"><?= ($system->getTemplate()) ?></textarea>
             </div>
         </div>

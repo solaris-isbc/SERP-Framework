@@ -3,7 +3,7 @@
   <div id="search_div">
     <div id="search_input" contenteditable="true"><?= ($snippets->getQuery()) ?></div>
     <div id="search_categories">
-      <div class="search_cat_active">Alle Kategorien</div>
+      <div class="search_cat_active">All</div>
       <div class="search_cat" style="margin-left: 50px;">Images</div>
       <div class="search_cat">Videos</div>
       <div class="search_cat">News</div>

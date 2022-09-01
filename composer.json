@@ -1,6 +1,7 @@
 {
     "require": {
         "bcosca/fatfree-core": "^3.8",
-        "rakibtg/sleekdb": "^2.13"
+        "rakibtg/sleekdb": "^2.13",
+        "mobiledetect/mobiledetectlib": "^2.8"
     }
 }
