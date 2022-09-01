@@ -1,6 +1,4 @@
 {
-    "backend": {
-        "username": "admin",
-        "password": "pass"
-    }
-}
+
+"backend": {"username":"admin","password":"pass"},
+"access": {"denyMobile":false,"denyDesktop":false}}

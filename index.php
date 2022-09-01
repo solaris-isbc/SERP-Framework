@@ -24,6 +24,18 @@ $f3->route(
 
 // store date for nth page and redirect to next one
 $f3->route(
+    'POST /administration',
+    function ($f3) {
+        $adminHandler = new AdminHandler($f3);
+        $sections = $f3->get('POST.sections');
+        $adminHandler->storeMainConfiguration($sections);
+        $adminHandler->displayAdminMainPage();
+    }
+);
+
+
+// store date for nth page and redirect to next one
+$f3->route(
     'POST /login',
     function ($f3) {
         $user = $f3->get('POST.username');

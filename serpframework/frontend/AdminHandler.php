@@ -29,6 +29,8 @@ class AdminHandler
  
         $this->f3->set('systems', $this->config->getSystems());
         
+        $this->f3->set('config', $this->config);
+
         echo \Template::instance()->render('views/admin/index.htm');
 
     }
@@ -117,5 +119,12 @@ class AdminHandler
     public function displayLoginPage($hasError = false) {
         $this->f3->set('hasError', $hasError);
         echo \Template::instance()->render('views/admin/login.htm');
+    }
+
+    public function storeMainConfiguration($sections) {
+        foreach($sections as $name => $section) {
+            $this->config->updateSection($name, json_decode($section));
+        }
+        $this->config->persist();
     }
 }

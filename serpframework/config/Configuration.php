@@ -34,6 +34,10 @@ class Configuration {
         $this->sections[$name] = $data;
     }
 
+    public function getSections() {
+        return $this->sections;
+    }
+
     private function loadSystems() {
         // iterate over every folder in resources folder and check for system.json files in them
         $dir = new \DirectoryIterator($this->resourcesDirectory);
@@ -59,10 +63,35 @@ class Configuration {
         $this->systems[] = $system;
     }
 
+    public function updateSection($name, $value) {
+        $this->sections[$name] = $value;
+    }
+
     public function getSetting($section, $name) {
         if(isset($this->sections[$section]) && isset($this->sections[$section]->{$name})) {
             return $this->sections[$section]->{$name};
         }
         return null;
+    }
+
+    public function persist() {
+        // store the current config
+        $jsonStr = '{' . PHP_EOL;
+        $continued = false;
+        foreach($this->sections as $name => $section) {
+            if (!$continued) {
+                $continued = true;
+                $jsonStr .= PHP_EOL;
+            }else {
+                // add line ending
+                $jsonStr .= ',' . PHP_EOL;
+            }
+            $jsonStr .= '"' . $name . '": ' . json_encode($section);
+        }
+        $jsonStr .= '}';
+        file_put_contents($this->configPath, $jsonStr);
+        // re-read the config files
+        $this->parseConfig();
+        $this->loadSystems();
     }
 }

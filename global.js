@@ -62,6 +62,22 @@ function storeDataPoint(key, value) {
     );
 }
 
+function beautifyTextarea(textarea) {
+    var text = textarea.value;
+    textarea.value = js_beautify(text, { indent_size: 2 });
+}
+
+function initializeCodemirror(textarea) {
+    let mode = textarea.getAttribute('data-mode') ?? "application/ld+json";
+    return editor = CodeMirror.fromTextArea(textarea, {
+        lineNumbers: true,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        mode: mode,
+        lineWrapping: true
+    });
+}
+
 // register event listeners on dom loaded
 (function() {
     // frontend
@@ -81,6 +97,14 @@ function storeDataPoint(key, value) {
         let targetSystem = previewAnchor.getAttribute('data-system');
         showPreview(targetSystem);
     }
+
+    let textareas = document.querySelectorAll('textarea.codemirror');
+    for (var i = 0; i < textareas.length; i++) {
+        let textarea = textareas[i];
+        beautifyTextarea(textarea);
+        initializeCodemirror(textarea);
+    }
+
 })();
 
 
