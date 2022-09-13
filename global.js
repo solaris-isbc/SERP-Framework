@@ -50,16 +50,12 @@ function storeDataPoint(key, value) {
     let participantId = document.getElementById('participantId').value;
     // fire and forget
     let url = window.location.origin  + '/storeDataPoint/' + participantId + '/' + key + '/' + value;
-    console.log(url);
-    fetch(url)
-    .then(
+    fetch(url).then(
       response  => {
         console.log(response);
-      },
-     rejection => {
+      }, rejection => {
         console.error(rejection.message);
-     }
-    );
+     });
 }
 
 function beautifyTextarea(textarea) {

@@ -45,6 +45,7 @@ class ExportHandler
                 'system' => base64_decode($userDataPoint->participant->getSystemId()),
                 'key' => $userDataPoint->dataPoint->getKey(),
                 'value' => $userDataPoint->dataPoint->getValue(),
+                'timestamp' => $userDataPoint->dataPoint->getTimestamp()['date'],
             ];
         }
         $this->outputCsvFile($outrows, 'dataPoints.csv');
