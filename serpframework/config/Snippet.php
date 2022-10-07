@@ -21,7 +21,6 @@ class Snippet {
                 continue;
             }
             $this->{$key} = $value;
-
         }       
         
     }

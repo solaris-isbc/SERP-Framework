@@ -9,11 +9,9 @@ use serpframework\persistence\DatabaseHandler;
 use serpframework\persistence\Models\DataPoint;
 use serpframework\persistence\Models\Participant;
 
-error_reporting(-1);
-ini_set('display_errors', '1');
 $f3 = \Base::instance();
 
-// store date for nth page and redirect to next one
+// display admin overview
 $f3->route(
     'GET /administration',
     function ($f3) {
@@ -22,7 +20,7 @@ $f3->route(
     }
 );
 
-// store date for nth page and redirect to next one
+// store admin voerview data
 $f3->route(
     'POST /administration',
     function ($f3) {
@@ -35,7 +33,7 @@ $f3->route(
 );
 
 
-// store date for nth page and redirect to next one
+// admin login check
 $f3->route(
     'POST /login',
     function ($f3) {
@@ -190,49 +188,6 @@ $f3->route(
         $databaseHandler->storeParticipantDataPoint($participant, $dataPoint);
     }
 );
-
-
-
-
-// HELPER-ROUTES
-
-$f3->route(
-    'GET /dump/@store',
-    function ($f3) {
-        $store = $f3->get('PARAMS.store');
-        echo "<pre>";
-        $databaseHandler = new DatabaseHandler();
-        var_dump($databaseHandler->{$store}->findAll());
-        echo "</pre>";
-    }
-);
-
-$f3->route(
-    'GET /clearStore/@store',
-    function ($f3) {
-        $store = $f3->get('PARAMS.store');
-        echo "<pre>";
-        $databaseHandler = new DatabaseHandler();
-        var_dump($databaseHandler->{$store}->deleteStore());
-        echo "</pre>";
-    }
-);
-
-
-$f3->route(
-    'GET /clearStores',
-    function ($f3) {
-        echo "<pre>";
-        echo "COMMENT IN TO NOT ACCIDENTALLY DELETE DATA";
-        $databaseHandler = new DatabaseHandler();
-        $databaseHandler->participantsStore->deleteStore();
-        $databaseHandler->answerStore->deleteStore();
-        $databaseHandler->dataPointStore->deleteStore();
-        $databaseHandler->participantDataPointStore->deleteStore();
-        echo "</pre>";
-    }
-);
-
 
 
 $f3->run();

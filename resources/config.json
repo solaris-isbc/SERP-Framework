@@ -1,4 +1,10 @@
 {
-
-"backend": {"username":"admin","password":"pass"},
-"access": {"denyMobile":false,"denyDesktop":false}}
+    "backend": {
+        "username": "admin",
+        "password": "pass"
+    },
+    "access": {
+        "denyMobile": false,
+        "denyDesktop": false
+    }
+}

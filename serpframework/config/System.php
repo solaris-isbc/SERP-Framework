@@ -45,7 +45,9 @@ class System {
         // special case: pageOrder -> we need the context of the system to load further json files
         // -> pass system for context purpose
         $this->members['pageOrder']->value->initialize($this);
-        file_put_contents($this->configFilePath, json_encode($data));
+        if($writeConfig) {
+            file_put_contents($this->configFilePath, json_encode($data));
+        }
 
     }
 

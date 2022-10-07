@@ -1,1 +1,23 @@
-{"name":"system-1","task":{"taskDescription":"Task description to be entered here","author":"Person who conducts the experiment","title":"title of the experiment","agreementText":"by clicking continue, i agree to the following conditions of the experiment: i will not sue anyone for not having a proper privacy statement."},"hasDocuments":true,"pageOrder":{"order":"fixed","pages":["pre_task_questionnaire.json",{"order":"random","pages":["snippets_bigfoot.json","snippets_flat_earth.json"]}]}}
+{
+    "name": "system-1",
+    "task": {
+        "taskDescription": "Task description to be entered here",
+        "author": "Person who conducts the experiment",
+        "title": "title of the experiment",
+        "agreementText": "by clicking continue, i agree to the following conditions of the experiment: i will not sue anyone for not having a proper privacy statement."
+    },
+    "hasDocuments": true,
+    "pageOrder": {
+        "order": "fixed",
+        "pages": [
+            "pre_task_questionnaire.json",
+            {
+                "order": "random",
+                "pages": [
+                    "snippets_bigfoot.json",
+                    "snippets_flat_earth.json"
+                ]
+            }
+        ]
+    }
+}

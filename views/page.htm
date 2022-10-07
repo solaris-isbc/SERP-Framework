@@ -45,11 +45,7 @@
     <include href="{{ @templatePath }}" />
     <check if="{{ @snippet->getCSS() !== null }}">
         <style>
-            {
-                    {
-                    @snippet->getCss()
-                }
-            }
+            {{ @snippet->getCss() }}
         </style>
     </check>
     </div>
